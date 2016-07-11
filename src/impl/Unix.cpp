@@ -32,7 +32,7 @@
 #include <mach/mach.h>
 #endif
 
-#include "../../include/nautonomous_output_send_actuation/impl/Unix.hpp"
+#include "../../include/nautonomous_actuation_synchronizer/impl/Unix.hpp"
 
 #ifndef TIOCINQ
 #ifdef FIONREAD

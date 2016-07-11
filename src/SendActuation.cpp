@@ -5,7 +5,7 @@
  *      Author: zeeuwe01
  */
 
-#include "../include/nautonomous_output_send_actuation/SendActuation.hpp"
+#include "../include/nautonomous_actuation_synchronizer/SendActuation.hpp"
 
 bool actuation_init_serial() {
 

@@ -1,4 +1,4 @@
-#include "../include/nautonomous_output_send_actuation/CommandActuation.hpp"
+#include "../include/nautonomous_actuation_synchronizer/CommandActuation.hpp"
 
 int main(int argc, char **argv)
 {
@@ -29,11 +29,6 @@ int main(int argc, char **argv)
 		  conveyor_message = nullptr;
 	  }
 
-	  //ROS_INFO("Send propulsion %d",send_test());
-	  /*if(lighting_message)
-	  {
-		  ROS_INFO("Send actuation %d", actuation_send_bool(lighting_message));
-	  }*/
 	  r.sleep();
 	  ros::spinOnce();
   }

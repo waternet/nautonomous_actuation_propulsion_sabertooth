@@ -5,12 +5,12 @@
  *      Author: zeeuwe01
  */
 
-#include "../include/nautonomous_output_send_actuation/ReceiveActuation.hpp"
+#include "../include/nautonomous_actuation_synchronizer/ReceiveActuation.hpp"
 
 
 
 #ifdef SABERTOOTH
-#include "../include/nautonomous_output_send_actuation/Sabertooth.hpp"
+#include "../include/nautonomous_actuation_synchronizer/Sabertooth.hpp"
 #endif
 
 /**
