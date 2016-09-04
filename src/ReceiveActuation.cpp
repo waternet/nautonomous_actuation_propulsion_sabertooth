@@ -14,7 +14,7 @@
 #endif
 
 /**
- * This tutorial demonstrates simple receipt of messages over the ROS system.
+ * Receive topic for multiplexed propulsion and create a new message based on the received topic message.
  */
 void propulsionCallback(const geometry_msgs::Twist::ConstPtr& msg) {
 	//ROS_INFO("Propulsion received : linear [%f, %f, %f] and angular [%f, %f, %f]", msg->linear.x, msg->linear.y, msg->linear.z, msg->angular.x, msg->angular.y, msg->angular.z);
@@ -33,7 +33,7 @@ void propulsionCallback(const geometry_msgs::Twist::ConstPtr& msg) {
 }
 
 /**
- * This tutorial demonstrates simple receipt of messages over the ROS system.
+ * Receive topic for multiplexed conveyor belt and create a new message based on the received topic message.
  */
 void conveyorCallback(const geometry_msgs::Twist::ConstPtr& msg) {
 	//ROS_INFO("Conveyor received : linear [%f, %f, %f] and angular [%f, %f, %f]", msg->linear.x, msg->linear.y, msg->linear.z, msg->angular.x, msg->angular.y, msg->angular.z);
@@ -51,7 +51,7 @@ void conveyorCallback(const geometry_msgs::Twist::ConstPtr& msg) {
 }
 
 /**
- * This tutorial demonstrates simple receipt of messages over the ROS system.
+ * Receive topic for multiplexed lighting and create a new message based on the received topic message.
  */
 void lightingCallback(const std_msgs::Bool::ConstPtr& msg) {
 	//ROS_INFO("Lighting received: [%d]", msg->data);

@@ -11,16 +11,22 @@ bool actuation_init_serial() {
 
 #if defined(SABERTOOTH) && not defined(SABERTOOTH_TEST)
 	ROS_INFO("Opening Sabertooth driver");
+	//Open serial port sabertooth at 115200 baud with 250 ms timeout.
 	actuation_serial = new serial::Serial(string("/dev/sabertooth"), 115200,
 			serial::Timeout::simpleTimeout(250));
 	ROS_INFO("Serial %d", actuation_serial->isOpen());
+
 	ros::Rate r1(1);
 	r1.sleep();
+	//Prepare the serial timeout for both motor drivers and send them.
 	uint8_t serial_timeout_propulsion[4], serial_timeout_conveyor[4];
 	sabertooth_advanced_serial_timeout(&serial_timeout_propulsion[0], &serial_timeout_conveyor[0]);
+	//Write timeout to propulsion motor driver
 	int bytes = actuation_serial->write(&serial_timeout_propulsion[0], 4);
+
 	ros::Rate r2(100);
 	r2.sleep();
+	//Write timeout to conveyor belt motor driver
 	bytes += actuation_serial->write(&serial_timeout_conveyor[0], 4);
 	return bytes;
 #endif
@@ -55,6 +61,7 @@ size_t actuation_send_twist(geometry_msgs::Twist* twist, bool propulsion) {
 	//ROS_INFO("Sending: propulsion twist");
 	std::string commandStringArray[8];
 	uint8_t command1[4], command2[4];
+	//If we are sending the propulsion call the appropriate function for filling in the command fields in the array using the twist message.
 	if(propulsion){
 		sabertooth_advanced_process_propulsion_twist(&command1[0], &command2[0], twist);
 	} else {
@@ -63,9 +70,13 @@ size_t actuation_send_twist(geometry_msgs::Twist* twist, bool propulsion) {
 
 	if(actuation_serial){
 #if not defined(SABERTOOTH_TEST)
+		//Send to the first motor driver 
 		int bytes = actuation_serial->write(&command1[0], 4);
+
 		ros::Rate r(100);
-		r.sleep();
+		r.sleep(); //wait 0.01
+
+		//Send to the second motor driver
 		bytes += actuation_serial->write(&command2[0], 4);
 		return bytes;
 #else
@@ -79,5 +90,3 @@ size_t actuation_send_twist(geometry_msgs::Twist* twist, bool propulsion) {
 	} else {
 		return 0;
 	}
-}
-
