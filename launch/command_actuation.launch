@@ -1,0 +1,23 @@
+<launch>
+
+	<arg name="log" default="false"/>
+	<arg name="testing" default="true"/>
+	<arg name="propulsion_address" default="128"/>
+	<arg name="conveyor_address" default="132"/>
+
+	<node name="command_actuation_node" pkg="nautonomous_actuation_synchronizer" type="command_actuation_node" output="screen">
+		<!-- Inputs -->
+		<remap from="propulsion" to="/actuation/propulsion/autonomous" />
+		<remap from="conveyor" to="/actuation/conveyor/autonomous" />
+		<remap from="lighting" to="/actuation/lighting/autonomous" />
+
+		<!-- Parameters -->
+		<param name="testing" type="bool" value="$(arg testing)"/>
+		<param name="propulsion_address" type="int" value="$(arg propulsion_address)"/>
+		<param name="conveyor_address" type="int" value="$(arg conveyor_address)"/>
+		<!-- Outputs -->
+
+	</node>
+
+	<node pkg="rosbag" type="record" name="rosbag_output_send" args="record -o /media/NautonomousBlackBox/bags/Output/send /actuation/propulsion/autonomous /actuation/conveyor/autonomous /actuation/lighting/autonomous" output="screen" if="$(arg log)"/>
+</launch>
