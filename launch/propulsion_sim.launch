@@ -1,0 +1,22 @@
+<launch>
+	<arg name="log" default="false"/>
+
+	<arg name="start_x" default="0.0"/>
+	<arg name="start_y" default="0.0"/>
+	<arg name="start_theta" default="0.0"/>
+
+	<node name="propulsion_simulator_node" pkg="nautonomous_actuation_simulator" type="propulsion_simulator_node" output="screen">
+		<!-- Inputs -->
+  		<remap from="propulsion" to="/actuation/propulsion/autonomous" />
+		<remap from="map" to="/map"/>	
+		<remap from="odom" to="/odom/combined"/>	
+
+		<!-- Parameters -->
+		<param name="start_x" type="double" value="$(arg start_x)"/>
+		<param name="start_y" type="double" value="$(arg start_y)"/>
+		<param name="start_theta" type="double" value="$(arg start_theta)"/>
+
+		<!-- Outputs -->
+
+	</node>
+</launch>
