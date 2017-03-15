@@ -1,1 +1,5 @@
-Here comes some basic documentation for this module.
+# nautonomous actuation synchronizer {#nautonomous_actuation_synchronizer}
+This package provides...
+
+
+## Options
