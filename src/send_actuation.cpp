@@ -7,6 +7,10 @@
 
 #include "../include/nautonomous_actuation_synchronizer/send_actuation.hpp"
 
+/**
+*  Initialized the serial connection, set the used port and bautrate. 
+**/
+
 bool actuation_init_serial() {
 
 	if(!testing_sabertooth){
@@ -16,20 +20,21 @@ bool actuation_init_serial() {
 				serial::Timeout::simpleTimeout(250));
 		ROS_INFO("Serial open: %d", actuation_serial->isOpen());
 
-		ros::Duration(1).sleep();
+		//   (Deprecated, done by actuation platform)
+		//ros::Duration(1).sleep();
 		
 		//Prepare the serial timeout for both motor drivers and send them.
-		uint8_t serial_timeout_propulsion[4], serial_timeout_conveyor[4];
-		sabertooth_advanced_serial_timeout(&serial_timeout_propulsion[0], &serial_timeout_conveyor[0]);
+		//uint8_t serial_timeout_propulsion[4], serial_timeout_conveyor[4];
+		//sabertooth_advanced_serial_timeout(&serial_timeout_propulsion[0], &serial_timeout_conveyor[0]);
 
 		//Write timeout to propulsion motor driver
-		int bytes = actuation_serial->write(&serial_timeout_propulsion[0], 4);
+		//int bytes = actuation_serial->write(&serial_timeout_propulsion[0], 4);
 
-		ros::Duration(0.01).sleep();
+		//ros::Duration(0.01).sleep();
 
 		//Write timeout to conveyor belt motor driver
-		bytes += actuation_serial->write(&serial_timeout_conveyor[0], 4);
-		return bytes;
+		//bytes += actuation_serial->write(&serial_timeout_conveyor[0], 4);
+		return 1;
 	} else {
 		return 0;
 	}
@@ -48,6 +53,7 @@ void actuation_send_debug_twist(const geometry_msgs::Twist::ConstPtr& propulsion
 }
 
 void actuation_send_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propulsion) {
+
 	uint8_t straightCommand[4], turnCommand[4];
 
 	sabertooth_advanced_process_propulsion_twist(&straightCommand[0], &turnCommand[0], propulsion);

@@ -28,20 +28,18 @@ int main(int argc, char **argv)
     ROS_INFO("Set propulsion_address to %u and conveyor_address to %u", propulsion_address, conveyor_address);
 
     // Subscribe to propulsion, conveyor and lighting topics.
-    ros::Subscriber propulsionSub = n.subscribe("propulsion", 1000, actuation_send_propulsion_twist);
-    ros::Subscriber conveyorSub = n.subscribe("conveyor", 1000, actuation_send_conveyor_twist);
-    ros::Subscriber lightingSub = n.subscribe("lighting", 1000, actuation_send_lighting_bool);
+    ros::Subscriber propulsionSub = n.subscribe("multiplexed_propulsion", 1000, actuation_send_propulsion_twist);
+    ros::Subscriber conveyorSub = n.subscribe("multiplexed_conveyor", 1000, actuation_send_conveyor_twist);
+    ros::Subscriber lightingSub = n.subscribe("multiplexed_lighting", 1000, actuation_send_lighting_bool);
 
     //Init the serial port for the motors
     //<!--TODO check if the serial connections was innited correctly.
     actuation_init_serial();
-    ROS_INFO("Subscribed to topics and serial initted");
+    ROS_INFO("Subscribed to topics and serial initted COMMANDACTUATIONNODE");
 
     signal(SIGINT, shutdownHandler);
 
     ros::spin();
-    
-    
 
     return 0;
 }
