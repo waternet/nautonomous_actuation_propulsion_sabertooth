@@ -1,5 +1,11 @@
 #include "../include/nautonomous_actuation_synchronizer/command_actuation_node.hpp"
 
+/**
+ * \brief Shutdown handler, deinit serial, call ros::shutdown()
+ * \param int sig
+ * \return null 
+ */
+
 void shutdownHandler(int sig)
 {
   // Deinit serial before shutdown down.
@@ -8,6 +14,10 @@ void shutdownHandler(int sig)
   // All the default sigint handler does is call shutdown()
   ros::shutdown();
 }
+
+/**
+ * Main for command actuation node, subscribes to topics, call init serial
+ */
 
 int main(int argc, char **argv)
 {
@@ -35,7 +45,7 @@ int main(int argc, char **argv)
     //Init the serial port for the motors
     //<!--TODO check if the serial connections was innited correctly.
     actuation_init_serial();
-    ROS_INFO("Subscribed to topics and serial initted COMMANDACTUATIONNODE");
+    ROS_INFO("Subscribed to topics and serial initted");
 
     signal(SIGINT, shutdownHandler);
 

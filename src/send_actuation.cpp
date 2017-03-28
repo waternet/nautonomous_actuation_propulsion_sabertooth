@@ -12,11 +12,13 @@
 **/
 
 bool actuation_init_serial() {
+	ROS_INFO("Opening Sabertooth drive, testing %d", testing_sabertooth);
+	testing_sabertooth = false;
 
 	if(!testing_sabertooth){
 		ROS_INFO("Opening Sabertooth driver");
 		//Open serial port sabertooth at 9600 baud with 250 ms timeout.
-		actuation_serial = new serial::Serial(string("/dev/ttyS0"),115200,
+		actuation_serial = new serial::Serial(string("/dev/nautonomous/actuation"),115200,
 				serial::Timeout::simpleTimeout(250));
 		ROS_INFO("Serial open: %d", actuation_serial->isOpen());
 
