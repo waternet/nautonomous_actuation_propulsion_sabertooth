@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   rostest
+  nautonomous_msgs
 )
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -L/usr/local/lib ${CMAKE_CXX_FLAGS} -g")
@@ -35,10 +36,10 @@ add_library(sabertooth
 )
 
 add_executable(command_actuation_node src/command_actuation_node.cpp)
+target_link_libraries(command_actuation_node ${catkin_LIBRARIES} send_actuation serial serial_unix sabertooth)
 
-target_link_libraries(command_actuation_node
-  ${catkin_LIBRARIES} send_actuation serial serial_unix sabertooth
-)
+add_executable(independent_inputs_publisher src/independent_inputs_publisher_node.cpp)
+target_link_libraries(independent_inputs_publisher ${catkin_LIBRARIES})
 
 if(CATKIN_ENABLE_TESTING)
   catkin_add_gtest(sabertooth_test test/sabertooth.test src/test/sabertooth_test.cpp )

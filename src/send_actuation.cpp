@@ -69,6 +69,31 @@ void actuation_send_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propu
 	}
 }
 
+size_t actuation_send_independent_inputs(double& left_motor_input, double& right_motor_input) {
+  uint8_t left_motor_command[4], right_motor_command[4];
+  sabertooth_advanced_process_propulsion_independent_inputs(&left_motor_command[0], &right_motor_command[0], left_motor_input, right_motor_input);
+
+  //TODO: what is all this exactly??...
+  if(actuation_serial){
+#if not defined(SABERTOOTH_TEST)
+    //Send to the first motor driver
+    int bytes = actuation_serial->write(&left_motor_command[0], 4);
+
+    ros::Rate r(100);
+    r.sleep(); //wait 0.01
+
+    //Send to the second motor driver
+    bytes += actuation_serial->write(&right_motor_command[0], 4);
+    return bytes;
+#else
+    ROS_INFO("Simulated");
+    return 8;
+#endif
+  } else {
+    return 0;
+  }
+}
+
 void actuation_send_conveyor_twist(const geometry_msgs::Twist::ConstPtr& conveyor){
 	//do nothing
 }
