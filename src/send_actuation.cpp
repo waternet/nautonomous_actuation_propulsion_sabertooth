@@ -69,7 +69,16 @@ void actuation_send_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propu
 	}
 }
 
+void actuation_send_conveyor_twist(const geometry_msgs::Twist::ConstPtr& conveyor){
+	//do nothing
+}
+
+void actuation_send_lighting_bool(const std_msgs::Bool::ConstPtr& lighting){
+	// do nothing
+}
+
 size_t actuation_send_independent_inputs(double& left_motor_input, double& right_motor_input) {
+	
   uint8_t left_motor_command[4], right_motor_command[4];
   sabertooth_advanced_process_propulsion_independent_inputs(&left_motor_command[0], &right_motor_command[0], left_motor_input, right_motor_input);
 
@@ -91,13 +100,5 @@ size_t actuation_send_independent_inputs(double& left_motor_input, double& right
 #endif
   } else {
     return 0;
-  }
-}
-
-void actuation_send_conveyor_twist(const geometry_msgs::Twist::ConstPtr& conveyor){
-	//do nothing
-}
-
-void actuation_send_lighting_bool(const std_msgs::Bool::ConstPtr& lighting){
-	// do nothing
+  }  
 }

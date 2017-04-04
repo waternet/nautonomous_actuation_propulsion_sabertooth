@@ -62,6 +62,62 @@ void sabertooth_advanced_process_propulsion_twist(uint8_t* straightCommand, uint
 	ROS_INFO("Sabertooth turn command %d %d %d %d", turnCommand[0],turnCommand[1],turnCommand[2],turnCommand[3]);
 }
 
+void sabertooth_advanced_process_propulsion_independent_inputs(uint8_t* left_motor_command, uint8_t* right_motor_command, double& left_motor_input, double& right_motor_input) {
+  double max_input = 1.0;
+
+  // Make sure the requested inputs do not exceed the maximum allowed input (saturation).
+  if (left_motor_input > max_input) {
+    left_motor_input = max_input;
+  } else if (left_motor_input < -max_input) {
+    left_motor_input = -max_input;
+  }
+  if (right_motor_input > max_input) {
+    right_motor_input = max_input;
+  } else if (right_motor_input < -max_input) {
+    right_motor_input = -max_input;
+  }
+
+  // Compute the motor command values.
+	int left_motor_command_value = (int) fabs(127.0 * left_motor_input / max_input) + 0.5; // +0.5 for rounding. //TODO: correct??
+	int right_motor_command_value = (int) fabs(127.0 * right_motor_input / max_input) + 0.5;
+
+  // Fill in the sabertooth command.
+  // address
+  left_motor_command[0] = propulsion_address;
+  right_motor_command[0] = propulsion_address;
+  // command
+  int forward_command[2] = {0, 4}; // commands to drive motor {1, 2} forward.
+  int backward_command[2] = {1, 5}; // commands to drive motor {1, 2} backward.
+  if (left_motor_input > 0) {
+    left_motor_command[1] = forward_command[left_motor_index]; // drive left motor forward.
+  }
+  else {
+    left_motor_command[1] = backward_command[left_motor_index]; // drive left motor backward.
+  }
+  if (right_motor_input > 0) {
+    right_motor_command[1] = forward_command[right_motor_index]; // drive right motor forward.
+  }
+  else {
+    right_motor_command[1] = backward_command[right_motor_index]; // drive right motor backward.
+  }
+  // data/value
+  left_motor_command[2] = left_motor_command_value;
+  right_motor_command[2] = right_motor_command_value;
+  ROS_ASSERT(left_motor_command[2] < 128 && right_motor_command[2] < 128);
+  // checksum
+  left_motor_command[3] = (left_motor_command[0] + left_motor_command[1] + left_motor_command[2]) & 0b01111111;
+  right_motor_command[3] = (right_motor_command[0] + right_motor_command[1] + right_motor_command[2]) & 0b01111111;
+
+  // Publish motor inputs (for parameter identification)
+  nautonomous_msgs::IndependentInputs motor_inputs;
+  motor_inputs.left_motor_input = left_motor_input;
+  //motor_inputs.right_motor_input = right_motor_input;
+  pub_motor_inputs.publish(motor_inputs);
+
+  ROS_INFO("Sabertooth left motor command %d %d %d %d", left_motor_command[0], left_motor_command[1], left_motor_command[2], left_motor_command[3]);
+  ROS_INFO("Sabertooth right motor command %d %d %d %d", right_motor_command[0], right_motor_command[1], right_motor_command[2], right_motor_command[3]);
+}
+
 /**
 * Create two message for the timeout for both motor drivers.
 */
