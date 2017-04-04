@@ -8,9 +8,10 @@
 #include "../include/nautonomous_actuation_synchronizer/send_actuation.hpp"
 
 /**
-*  Initialized the serial connection, set the used port and bautrate. 
-**/
-
+ *\brief  Initialized the serial connection, set the used port and bautrate.
+ *\params
+ *\return
+ */
 bool actuation_init_serial() {
 	ROS_INFO("Opening Sabertooth drive, testing %d", testing_sabertooth);
 	testing_sabertooth = false;
@@ -42,6 +43,11 @@ bool actuation_init_serial() {
 	}
 }
 
+/**
+ *\brief  Deinitialize and removes the serial connection.
+ *\params
+ *\return
+ */
 void actuation_deinit_serial() {
 	if(actuation_serial){
 		actuation_serial->close();
@@ -50,10 +56,20 @@ void actuation_deinit_serial() {
 	}
 }
 
+/**
+ *\brief  Deprecated, Send debug twist.
+ *\params const geometry_msgs::Twist propulsion
+ *\return
+ */
 void actuation_send_debug_twist(const geometry_msgs::Twist::ConstPtr& propulsion) {
 
 }
 
+/**
+ *\brief Send propulsion twist msg.
+ *\params const geometry_msgs::Twist propulsion
+ *\return
+ */
 void actuation_send_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propulsion) {
 
 	uint8_t straightCommand[4], turnCommand[4];
@@ -69,10 +85,20 @@ void actuation_send_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propu
 	}
 }
 
+/**
+ *\brief  Send conveyor twist.
+ *\params const geometry_msgs::Twist conveyor
+ *\return
+ */
 void actuation_send_conveyor_twist(const geometry_msgs::Twist::ConstPtr& conveyor){
 	//do nothing
 }
 
+/**
+ *\brief  Send lighting boolean.
+ *\params const std_msgs::Bool lighting
+ *\return
+ */
 void actuation_send_lighting_bool(const std_msgs::Bool::ConstPtr& lighting){
 	// do nothing
 }
