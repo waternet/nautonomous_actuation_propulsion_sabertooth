@@ -77,6 +77,8 @@ void actuation_send_lighting_bool(const std_msgs::Bool::ConstPtr& lighting){
 	// do nothing
 }
 
+
+
 size_t actuation_send_independent_inputs(double& left_motor_input, double& right_motor_input) {
 	
   uint8_t left_motor_command[4], right_motor_command[4];
