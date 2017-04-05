@@ -62,24 +62,27 @@ void sabertooth_advanced_process_propulsion_twist(uint8_t* straightCommand, uint
 	ROS_INFO("Sabertooth turn command %d %d %d %d", turnCommand[0],turnCommand[1],turnCommand[2],turnCommand[3]);
 }
 
-void sabertooth_advanced_process_propulsion_independent_inputs(uint8_t* left_motor_command, uint8_t* right_motor_command, double& left_motor_input, double& right_motor_input) {
+void sabertooth_advanced_process_propulsion_independent_inputs(uint8_t* left_motor_command, uint8_t* right_motor_command, const nautonomous_msgs::IndependentInputs::ConstPtr& msg) {
   double max_input = 1.0;
 
+	float left_motor_input_temp = msg->left_motor_input;
+	float right_motor_input_temp = msg->right_motor_input;
+
   // Make sure the requested inputs do not exceed the maximum allowed input (saturation).
-  if (left_motor_input > max_input) {
-    left_motor_input = max_input;
-  } else if (left_motor_input < -max_input) {
-    left_motor_input = -max_input;
+  if (left_motor_input_temp > max_input) {
+    left_motor_input_temp = max_input;
+  } else if (left_motor_input_temp < -max_input) {
+    left_motor_input_temp = -max_input;
   }
-  if (right_motor_input > max_input) {
-    right_motor_input = max_input;
-  } else if (right_motor_input < -max_input) {
-    right_motor_input = -max_input;
+  if (right_motor_input_temp > max_input) {
+    right_motor_input_temp = max_input;
+  } else if (right_motor_input_temp < -max_input) {
+    right_motor_input_temp = -max_input;
   }
 
   // Compute the motor command values.
-	int left_motor_command_value = (int) fabs(127.0 * left_motor_input / max_input) + 0.5; // +0.5 for rounding. //TODO: correct??
-	int right_motor_command_value = (int) fabs(127.0 * right_motor_input / max_input) + 0.5;
+	int left_motor_command_value = (int) fabs(127.0 * left_motor_input_temp / max_input) + 0.5; // +0.5 for rounding. //TODO: correct??
+	int right_motor_command_value = (int) fabs(127.0 * right_motor_input_temp / max_input) + 0.5;
 
   // Fill in the sabertooth command.
   // address
@@ -88,13 +91,13 @@ void sabertooth_advanced_process_propulsion_independent_inputs(uint8_t* left_mot
   // command
   int forward_command[2] = {0, 4}; // commands to drive motor {1, 2} forward.
   int backward_command[2] = {1, 5}; // commands to drive motor {1, 2} backward.
-  if (left_motor_input > 0) {
+  if (left_motor_input_temp > 0) {
     left_motor_command[1] = forward_command[left_motor_index]; // drive left motor forward.
   }
   else {
     left_motor_command[1] = backward_command[left_motor_index]; // drive left motor backward.
   }
-  if (right_motor_input > 0) {
+  if (right_motor_input_temp > 0) {
     right_motor_command[1] = forward_command[right_motor_index]; // drive right motor forward.
   }
   else {
@@ -110,7 +113,7 @@ void sabertooth_advanced_process_propulsion_independent_inputs(uint8_t* left_mot
 
   // Publish motor inputs (for parameter identification)
   nautonomous_msgs::IndependentInputs motor_inputs;
-  motor_inputs.left_motor_input = left_motor_input;
+  motor_inputs.left_motor_input = left_motor_input_temp;
   //motor_inputs.right_motor_input = right_motor_input;
   pub_motor_inputs.publish(motor_inputs);
 

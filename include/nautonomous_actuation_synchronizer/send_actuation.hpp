@@ -13,6 +13,7 @@
 
 #include "std_msgs/Bool.h"
 #include "geometry_msgs/Twist.h"
+#include "nautonomous_msgs/IndependentInputs.h"
 #include "serial.hpp"
 #include "sabertooth.hpp"
 #include "ros/ros.h"
@@ -26,10 +27,11 @@ bool testing_sabertooth;
 bool actuation_init_serial();
 void actuation_deinit_serial();
 
-size_t actuation_send_independent_inputs(double& left_motor_input, double& right_motor_input);
+
 
 void actuation_send_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propulsion);
 void actuation_send_conveyor_twist(const geometry_msgs::Twist::ConstPtr& conveyor);
 void actuation_send_lighting_bool(const std_msgs::Bool::ConstPtr& lighting);
+void actuation_send_independent_inputs(const nautonomous_msgs::IndependentInputs::ConstPtr& msg);
 
 #endif /* SENDACTUATION_HPP_ */

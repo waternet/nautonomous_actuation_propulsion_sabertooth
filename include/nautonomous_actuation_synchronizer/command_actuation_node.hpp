@@ -9,7 +9,6 @@
 #define COMMANDACTUATIONNODE_HPP_
 
 #include <signal.h>
-
 #include "ros/ros.h"
 #include "nautonomous_msgs/IndependentInputs.h"
 #include "send_actuation.hpp"

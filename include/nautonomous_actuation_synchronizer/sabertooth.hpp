@@ -56,10 +56,7 @@ void sabertooth_test_message(uint8_t address, uint8_t command, uint8_t value, ui
 void sabertooth_advanced_process_propulsion_twist(uint8_t* straightCommand, uint8_t* turnCommand, const geometry_msgs::Twist::ConstPtr& twist);
 void sabertooth_advanced_process_conveyor_twist(uint8_t* motor1, uint8_t* motor2, const geometry_msgs::Twist::ConstPtr& twist);
 void sabertooth_advanced_serial_timeout(uint8_t* driver1, uint8_t* driver2);
-
-void sabertooth_advanced_process_propulsion_independent_inputs(uint8_t* left_motor_command, uint8_t* right_motor_command, double& left_motor_input, double& right_motor_input);
-void sabertooth_advanced_process_propulsion_twist_independent(uint8_t* left_motor_command, uint8_t* right_motor_command, geometry_msgs::Twist* twist);
-void sabertooth_advanced_process_conveyor_twist(uint8_t* motor1, uint8_t* motor2, geometry_msgs::Twist* twist);
+void sabertooth_advanced_process_propulsion_independent_inputs(uint8_t* left_motor_command, uint8_t* right_motor_command, const nautonomous_msgs::IndependentInputs::ConstPtr& msg);
 
 extern ros::Publisher pub_motor_inputs;
 // Parameters

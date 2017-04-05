@@ -14,7 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
 set(CMAKE_CXX_FLAGS "-std=c++11 -L/usr/local/lib ${CMAKE_CXX_FLAGS} -g")
 
 catkin_package(
-
+    CATKIN_DEPENDS nautonomous_msgs
 )
 
 include_directories(nautonomous_msgs)
