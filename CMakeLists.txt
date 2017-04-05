@@ -17,6 +17,7 @@ catkin_package(
 
 )
 
+include_directories(nautonomous_msgs)
 
 include_directories(
   ${catkin_INCLUDE_DIRS}
