@@ -16,7 +16,7 @@ bool actuation_init_serial() {
 	if(!testing_sabertooth){
 		ROS_INFO("Opening Sabertooth driver");
 		//Open serial port sabertooth at 9600 baud with 250 ms timeout.
-		actuation_serial = new serial::Serial(string("/dev/ttyS0"),115200,
+		actuation_serial = new serial::Serial(string("/dev/ttyACM0"),115200,
 				serial::Timeout::simpleTimeout(250));
 		ROS_INFO("Serial open: %d", actuation_serial->isOpen());
 
@@ -62,6 +62,8 @@ void actuation_send_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propu
 		int bytes = actuation_serial->write(&straightCommand[0], 4);
 
 		ros::Duration(0.01).sleep();
+
+		ROS_INFO("Sending to sabr");
 
 		bytes += actuation_serial->write(&turnCommand[0], 4);
 	}
