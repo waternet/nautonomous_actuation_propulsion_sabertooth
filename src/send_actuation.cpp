@@ -18,7 +18,7 @@ bool actuation_init_serial() {
 	if(!testing_sabertooth){
 		ROS_INFO("Opening Sabertooth driver");
 		//Open serial port sabertooth at 9600 baud with 250 ms timeout.
-		actuation_serial = new serial::Serial(string("/dev/nautonomous/actuation"),115200,
+		actuation_serial = new serial::Serial(string("/dev/ttyACM0"),115200,
 				serial::Timeout::simpleTimeout(250));
 		ROS_INFO("Serial open: %d", actuation_serial->isOpen());
 
@@ -98,7 +98,7 @@ void actuation_send_independent_inputs(const nautonomous_msgs::IndependentInputs
 
     	ros::Rate r(100);
     	r.sleep(); //wait 0.01
-
+		  ROS_INFO("Sending twist message");
     	//Send to the second motor driver
     	bytes += actuation_serial->write(&right_motor_command[0], 4);
 	#else

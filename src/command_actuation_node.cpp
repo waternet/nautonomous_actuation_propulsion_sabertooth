@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 
     //Init the serial port for the motors
     //<!--TODO check if the serial connections was innited correctly.
-    //actuation_init_serial();
+    actuation_init_serial();
     ROS_INFO("Subscribed to topics and serial initted");
 
     signal(SIGINT, shutdownHandler);
