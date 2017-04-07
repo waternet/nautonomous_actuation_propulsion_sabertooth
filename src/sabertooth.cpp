@@ -114,7 +114,7 @@ void sabertooth_advanced_process_propulsion_independent_inputs(uint8_t* left_mot
   // Publish motor inputs (for parameter identification)
   nautonomous_msgs::IndependentInputs motor_inputs;
   motor_inputs.left_motor_input = left_motor_input_temp;
-  //motor_inputs.right_motor_input = right_motor_input;
+  motor_inputs.right_motor_input = right_motor_input_temp;
   pub_motor_inputs.publish(motor_inputs);
 
   ROS_INFO("Sabertooth left motor command %d %d %d %d", left_motor_command[0], left_motor_command[1], left_motor_command[2], left_motor_command[3]);
