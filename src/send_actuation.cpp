@@ -19,9 +19,7 @@ bool actuation_init_serial() {
 	if(!testing_sabertooth){
 		ROS_INFO("Opening Sabertooth driver");
 		//Open serial port sabertooth at 9600 baud with 250 ms timeout.
-		actuation_serial = new serial::Serial(string("/dev/nautonomous/actuation"),115200,
-
-				serial::Timeout::simpleTimeout(250));
+		actuation_serial = new serial::Serial(string("/dev/nautonomous/actuation"),115200, serial::Timeout::simpleTimeout(250));
 		ROS_INFO("Serial open: %d", actuation_serial->isOpen());
 
 		//   (Deprecated, done by actuation platform)
@@ -76,6 +74,8 @@ void actuation_send_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propu
 	uint8_t straightCommand[4], turnCommand[4];
 
 	sabertooth_advanced_process_propulsion_twist(&straightCommand[0], &turnCommand[0], propulsion);
+	
+	ROS_INFO("In send propulstion function");
 
 	if(actuation_serial && !testing_sabertooth){
 		int bytes = actuation_serial->write(&straightCommand[0], 4);

@@ -44,8 +44,14 @@ int main(int argc, char **argv)
 
     //Init the serial port for the motors
     //<!--TODO check if the serial connections was innited correctly.
-    actuation_init_serial();
-    ROS_INFO("Subscribed to topics and serial initted");
+    if(actuation_init_serial()){
+		ROS_INFO("Actuation initted successfully");
+	}
+	else{
+		ROS_WARN("Could not init Actuation");
+	}
+
+    ROS_INFO("Subscribed to topics for multiplexer");
 
     signal(SIGINT, shutdownHandler);
 
