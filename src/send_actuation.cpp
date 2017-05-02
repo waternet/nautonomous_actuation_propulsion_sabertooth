@@ -42,6 +42,8 @@ bool actuation_init_serial() {
 	}
 }
 
+
+
 /**
  *\brief  Deinitialize and removes the serial connection.
  *\params
@@ -74,17 +76,33 @@ void actuation_send_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propu
 	uint8_t straightCommand[4], turnCommand[4];
 
 	sabertooth_advanced_process_propulsion_twist(&straightCommand[0], &turnCommand[0], propulsion);
-	
-	ROS_INFO("In send propulstion function");
 
 	if(actuation_serial && !testing_sabertooth){
-		int bytes = actuation_serial->write(&straightCommand[0], 4);
+		//Check status watchdog
+		if(status_msg.level == 0){
+			//ROS_INFO("Actuation running");
+			
+			int bytes = actuation_serial->write(&straightCommand[0], 4);
+			ros::Duration(0.01).sleep();
+			bytes += actuation_serial->write(&turnCommand[0], 4);
+/*
+			std::string responce;
+			responce = "";
+			actuation_serial->read(responce, 1);
 
-		ros::Duration(0.01).sleep();
+			//ROS_INFO("Serial responce after sending: %s\n", responce.c_str());
+			if(responce.compare("P") == 0){
+				ROS_INFO("Right data send!");	
+			}else if(responce.compare("W") == 0){
+				ROS_INFO("Wrong data send!");
+			}
 
-		ROS_INFO("Sending to sabr");
-
-		bytes += actuation_serial->write(&turnCommand[0], 4);
+			actuation_serial->flushInput();
+*/	
+		}else{
+			//ROS_INFO("Actuation not running");
+		}
+		
 	}
 }
 
@@ -94,6 +112,7 @@ void actuation_send_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propu
  *\return
  */
 void actuation_send_conveyor_twist(const geometry_msgs::Twist::ConstPtr& conveyor){
+	ROS_INFO("Conveyor message");
 	//do nothing
 }
 

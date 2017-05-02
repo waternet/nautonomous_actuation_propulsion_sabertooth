@@ -17,7 +17,10 @@ void sabertooth_test_message(uint8_t address, uint8_t command, uint8_t value, ui
 }
 
 /**
- * Create an array of straight command and turn command, using the twist message to translate from a twist message to a Sabertooth command array.
+ *\brief Propulsion Create an array of straight command and turn command, using the twist message to translate from a twist message to a Sabertooth command array.
+ *\param uint8_t* straightCommand
+ *\param uint8_t* turnCommand
+ *\param const geometry_msgs::Twist::ConstPtr& twist
  */
 void sabertooth_advanced_process_propulsion_twist(uint8_t* straightCommand, uint8_t* turnCommand, const geometry_msgs::Twist::ConstPtr& twist){
 	
@@ -66,8 +69,8 @@ void sabertooth_advanced_process_propulsion_twist(uint8_t* straightCommand, uint
 	}
 	turnCommand[3] = (turnCommand[0]+turnCommand[1]+turnCommand[2]) & 0b01111111;
 
-	ROS_INFO("Sabertooth straight command %d %d %d %d", straightCommand[0],straightCommand[1],straightCommand[2],straightCommand[3]);
-	ROS_INFO("Sabertooth turn command %d %d %d %d", turnCommand[0],turnCommand[1],turnCommand[2],turnCommand[3]);
+	//ROS_INFO("Sabertooth straight command %d %d %d %d", straightCommand[0],straightCommand[1],straightCommand[2],straightCommand[3]);
+	//ROS_INFO("Sabertooth turn command %d %d %d %d", turnCommand[0],turnCommand[1],turnCommand[2],turnCommand[3]);
 }
 
 /**

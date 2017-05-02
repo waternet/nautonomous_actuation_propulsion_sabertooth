@@ -18,6 +18,7 @@ catkin_package(
 
 
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -34,10 +35,15 @@ add_library(sabertooth
   src/sabertooth.cpp
 )
 
+add_library(watchdog
+  src/watchdog.cpp
+)
+
+
 add_executable(command_actuation_node src/command_actuation_node.cpp)
 
 target_link_libraries(command_actuation_node
-  ${catkin_LIBRARIES} send_actuation serial serial_unix sabertooth
+  ${catkin_LIBRARIES} send_actuation serial serial_unix sabertooth watchdog
 )
 
 if(CATKIN_ENABLE_TESTING)

@@ -16,6 +16,7 @@
 
 #include "serial.hpp"
 #include "sabertooth.hpp"
+#include "watchdog.hpp"
 
 using namespace std;
 

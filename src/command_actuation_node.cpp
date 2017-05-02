@@ -21,7 +21,6 @@ void shutdownHandler(int sig)
 
 int main(int argc, char **argv)
 {
-
     ros::init(argc, argv, "command_actuation_node");
     ROS_INFO("Initializing command_actuation_node");
     ros::NodeHandle n;
@@ -41,17 +40,20 @@ int main(int argc, char **argv)
     ros::Subscriber propulsionSub = n.subscribe("multiplexed_propulsion", 1000, actuation_send_propulsion_twist);
     ros::Subscriber conveyorSub = n.subscribe("multiplexed_conveyor", 1000, actuation_send_conveyor_twist);
     ros::Subscriber lightingSub = n.subscribe("multiplexed_lighting", 1000, actuation_send_lighting_bool);
+    ROS_INFO("Subscribed to topics for multiplexer");
+
+    //Publisher
+    watchdog_publisher = n.advertise<diagnostic_msgs::DiagnosticStatus>("watchdog",
+			1000);
 
     //Init the serial port for the motors
     //<!--TODO check if the serial connections was innited correctly.
     if(actuation_init_serial()){
-		ROS_INFO("Actuation initted successfully");
-	}
-	else{
-		ROS_WARN("Could not init Actuation");
-	}
-
-    ROS_INFO("Subscribed to topics for multiplexer");
+		  ROS_INFO("Actuation initted successfully");
+      run_watchdog();
+    }else{
+      ROS_WARN("Could not init Actuation");
+    }
 
     signal(SIGINT, shutdownHandler);
 
