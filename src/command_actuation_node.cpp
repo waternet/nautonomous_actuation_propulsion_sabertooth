@@ -1,5 +1,11 @@
 #include "../include/nautonomous_actuation_synchronizer/command_actuation_node.hpp"
 
+/**
+ * \brief Shutdown handler, deinit serial, call ros::shutdown()
+ * \param int sig
+ * \return null 
+ */
+
 void shutdownHandler(int sig)
 {
   // Deinit serial before shutdown down.
@@ -9,9 +15,12 @@ void shutdownHandler(int sig)
   ros::shutdown();
 }
 
+/**
+ * Main for command actuation node, subscribes to topics, call init serial
+ */
+
 int main(int argc, char **argv)
 {
-
     ros::init(argc, argv, "command_actuation_node");
     ROS_INFO("Initializing command_actuation_node");
     ros::NodeHandle n;
@@ -28,20 +37,27 @@ int main(int argc, char **argv)
     ROS_INFO("Set propulsion_address to %u and conveyor_address to %u", propulsion_address, conveyor_address);
 
     // Subscribe to propulsion, conveyor and lighting topics.
-    ros::Subscriber propulsionSub = n.subscribe("propulsion", 1000, actuation_send_propulsion_twist);
-    ros::Subscriber conveyorSub = n.subscribe("conveyor", 1000, actuation_send_conveyor_twist);
-    ros::Subscriber lightingSub = n.subscribe("lighting", 1000, actuation_send_lighting_bool);
+    ros::Subscriber propulsionSub = n.subscribe("multiplexed_propulsion", 1000, actuation_send_propulsion_twist);
+    ros::Subscriber conveyorSub = n.subscribe("multiplexed_conveyor", 1000, actuation_send_conveyor_twist);
+    ros::Subscriber lightingSub = n.subscribe("multiplexed_lighting", 1000, actuation_send_lighting_bool);
+    ROS_INFO("Subscribed to topics for multiplexer");
+
+    //Publisher
+    watchdog_publisher = n.advertise<diagnostic_msgs::DiagnosticStatus>("watchdog",
+			1000);
 
     //Init the serial port for the motors
     //<!--TODO check if the serial connections was innited correctly.
-    actuation_init_serial();
-    ROS_INFO("Subscribed to topics and serial initted");
+    if(actuation_init_serial()){
+		  ROS_INFO("Actuation initted successfully");
+      run_watchdog();
+    }else{
+      ROS_WARN("Could not init Actuation");
+    }
 
     signal(SIGINT, shutdownHandler);
 
     ros::spin();
-    
-    
 
     return 0;
 }

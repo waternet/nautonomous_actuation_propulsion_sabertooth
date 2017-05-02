@@ -1,7 +1,7 @@
 <launch>
 
 	<arg name="log" default="false"/>
-	<arg name="testing" default="true"/>
+	<arg name="testing" default="false"/>
 	<arg name="propulsion_address" default="128"/>
 	<arg name="conveyor_address" default="132"/>
 

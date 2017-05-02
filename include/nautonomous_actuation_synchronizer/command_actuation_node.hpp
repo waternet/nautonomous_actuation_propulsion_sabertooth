@@ -14,6 +14,7 @@
 
 #include "send_actuation.hpp"
 #include "sabertooth.hpp"
+#include "watchdog.hpp"
 
 void shutdownHandler(int sig);
 
