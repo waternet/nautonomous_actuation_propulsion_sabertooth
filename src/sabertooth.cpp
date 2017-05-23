@@ -44,8 +44,6 @@ void sabertooth_advanced_process_propulsion_twist(uint8_t* straightCommand, uint
 		straightCommand[1] = 9;
 		straightCommand[2] = 0;
 	}
-	straightCommand[3] = (straightCommand[0]+straightCommand[1]+straightCommand[2]) & 0b01111111;
-
 
 	minimumValue = 0.01;
 	maximumValue = 0.5;
@@ -67,10 +65,37 @@ void sabertooth_advanced_process_propulsion_twist(uint8_t* straightCommand, uint
 		turnCommand[1] = 10;
 		turnCommand[2] = 0;
 	}
-	turnCommand[3] = (turnCommand[0]+turnCommand[1]+turnCommand[2]) & 0b01111111;
 
-	//ROS_INFO("Sabertooth straight command %d %d %d %d", straightCommand[0],straightCommand[1],straightCommand[2],straightCommand[3]);
-	//ROS_INFO("Sabertooth turn command %d %d %d %d", turnCommand[0],turnCommand[1],turnCommand[2],turnCommand[3]);
+	/*
+		OPTION 1: only steering, no forward movement. Double the steering value
+	*/
+	//Spliting moving forward and steering. If angular.z is above a certain value, only steering and no straight
+	if(twist->angular.z > 0.02 || twist->angular.z < -0.02){
+		straightCommand[1] = 0;
+		straightCommand[2] = 0;
+
+		//Steering value x2 to make it stronger -> max of 127
+		turnCommand[2] = turnCommand[2] * 2;
+		if(turnCommand[2] > 127){
+			turnCommand[2] = 127;
+		}
+	}
+
+	/*
+		OPTION 2: Both steering and moving forward, double the steering value
+
+
+	turnCommand[2] = turnCommand[2] * 2;
+	if(turnCommand[2] > 127){
+		turnCommand[2] = 127;
+	}
+	*/
+
+	turnCommand[3] = (turnCommand[0]+turnCommand[1]+turnCommand[2]) & 0b01111111;
+	straightCommand[3] = (straightCommand[0]+straightCommand[1]+straightCommand[2]) & 0b01111111;
+
+	ROS_INFO("Sabertooth straight command %d %d %d %d", straightCommand[0],straightCommand[1],straightCommand[2],straightCommand[3]);
+	ROS_INFO("Sabertooth turn command %d %d %d %d", turnCommand[0],turnCommand[1],turnCommand[2],turnCommand[3]);
 }
 
 /**

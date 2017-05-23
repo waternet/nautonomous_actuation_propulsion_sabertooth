@@ -28,6 +28,7 @@ int main(int argc, char **argv)
     // Params
     ros::NodeHandle param("~");
     param.param("testing", testing_sabertooth, false);
+    ROS_INFO("Testing sabertooth: %d", testing_sabertooth);
 
     int propulsion_address_value = 0, conveyor_address_value = 0;
     param.param("propulsion_address", propulsion_address_value, 128);
@@ -48,11 +49,13 @@ int main(int argc, char **argv)
 
     //Init the serial port for the motors
     //<!--TODO check if the serial connections was innited correctly.
-    if(actuation_init_serial()){
-		  ROS_INFO("Actuation initted successfully");
-      run_watchdog();
-    }else{
-      ROS_WARN("Could not init Actuation");
+    if(!testing_sabertooth){
+      if(actuation_init_serial()){
+        ROS_INFO("Actuation initted successfully");
+        run_watchdog();
+      }else{
+        ROS_WARN("Could not init Actuation");
+      }
     }
 
     signal(SIGINT, shutdownHandler);
