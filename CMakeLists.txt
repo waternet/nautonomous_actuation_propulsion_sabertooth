@@ -20,6 +20,7 @@ catkin_package(
 include_directories(nautonomous_msgs)
 
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -36,8 +37,12 @@ add_library(sabertooth
   src/sabertooth.cpp
 )
 
+add_library(watchdog
+  src/watchdog.cpp
+)
+
 add_executable(command_actuation_node src/command_actuation_node.cpp)
-target_link_libraries(command_actuation_node ${catkin_LIBRARIES} send_actuation serial serial_unix sabertooth)
+target_link_libraries(command_actuation_node ${catkin_LIBRARIES} send_actuation serial serial_unix sabertooth watchdog)
 
 add_executable(independent_inputs_publisher src/independent_inputs_publisher_node.cpp)
 target_link_libraries(independent_inputs_publisher ${catkin_LIBRARIES})

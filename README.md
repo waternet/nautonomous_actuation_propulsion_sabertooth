@@ -24,7 +24,7 @@ command_actuation_node
 -- publishes commands to serial port --
 
 ## Files
-[Include](../../doxygen_nautonomous/html/dir_24f9e5a3f98ba5b1652caba176a493c4.html)  |  [Src](../../doxygen_nautonomous/html/dir_0e1bf686876a66f778c9a6403953ffcc.html)
+[Include](dir_24f9e5a3f98ba5b1652caba176a493c4.html)  |  [Src](dir_0e1bf686876a66f778c9a6403953ffcc.html)
 
 ##Overview
 ![send_actuation.launch](../images/launch_send_actuation.png)

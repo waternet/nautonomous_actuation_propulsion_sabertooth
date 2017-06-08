@@ -1,6 +1,13 @@
 #include "../include/nautonomous_actuation_synchronizer/sabertooth.hpp"
-//
 
+/**
+ *\brief Create test message for sabertooth
+ *\param uint8_t address
+ *\param uint8_t command
+ *\param uint8_t value
+ *\param uint8_t* sabertoothCommand
+ *\return
+ */
 void sabertooth_test_message(uint8_t address, uint8_t command, uint8_t value, uint8_t* sabertoothCommand){
 	sabertoothCommand[0] = address;
 	sabertoothCommand[1] = command;
@@ -8,9 +15,12 @@ void sabertooth_test_message(uint8_t address, uint8_t command, uint8_t value, ui
 	sabertoothCommand[3] = (address+command+value)&0b01111111;
 }
 
-/*
-* Create an array of straight command and turn command, using the twist message to translate from a twist message to a Sabertooth command array.
-*/
+/**
+ *\brief Propulsion Create an array of straight command and turn command, using the twist message to translate from a twist message to a Sabertooth command array.
+ *\param uint8_t* straightCommand
+ *\param uint8_t* turnCommand
+ *\param const geometry_msgs::Twist::ConstPtr& twist
+ */
 void sabertooth_advanced_process_propulsion_twist(uint8_t* straightCommand, uint8_t* turnCommand, const geometry_msgs::Twist::ConstPtr& twist){
 	
 	float minimumValue = 0.01;
@@ -135,4 +145,3 @@ void sabertooth_advanced_serial_timeout(uint8_t* driver1, uint8_t* driver2){
 	driver2[2] = 10;
 	driver2[3] = (driver2[0]+driver2[1]+driver2[2]) & 0b01111111;
 }
-

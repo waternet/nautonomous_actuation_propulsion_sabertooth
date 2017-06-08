@@ -17,6 +17,7 @@
 #include "serial.hpp"
 #include "sabertooth.hpp"
 #include "ros/ros.h"
+#include "watchdog.hpp"
 
 using namespace std;
 
@@ -26,8 +27,6 @@ bool testing_sabertooth;
 
 bool actuation_init_serial();
 void actuation_deinit_serial();
-
-
 
 void actuation_send_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propulsion);
 void actuation_send_conveyor_twist(const geometry_msgs::Twist::ConstPtr& conveyor);
