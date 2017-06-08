@@ -8,16 +8,16 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   rostest
-  nautonomous_msgs
+  nautonomous_logger_msgs
 )
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -L/usr/local/lib ${CMAKE_CXX_FLAGS} -g")
 
 catkin_package(
-    CATKIN_DEPENDS nautonomous_msgs
+    CATKIN_DEPENDS nautonomous_logger_msgs
 )
 
-include_directories(nautonomous_msgs)
+include_directories(nautonomous_logger_msgs)
 
 include_directories(
   include
