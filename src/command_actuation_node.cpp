@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     ros::Subscriber conveyorSub = n.subscribe("multiplexed_conveyor", 1000, actuation_send_conveyor_twist);
     ros::Subscriber lightingSub = n.subscribe("multiplexed_lighting", 1000, actuation_send_lighting_bool);
 
-    ros::Subscriber independentInputsSub = n.subscribe("independent_inputs", 1000, actuation_send_independent_inputs);
+    ros::Subscriber independentInputsSub = n.subscribe("motor_mode/independent_inputs", 1000, actuation_send_independent_inputs);
 
     pub_motor_inputs = n.advertise<nautonomous_msgs::IndependentInputs>("motor_inputs", 1, true);
 
