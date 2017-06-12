@@ -25,6 +25,13 @@ int main(int argc, char **argv)
     ROS_INFO("Initializing command_actuation_node");
     ros::NodeHandle n;
 
+    // Load parameters
+    ros::NodeHandle nh_private("~");
+    nh_private.param("driver_mode", driver_mode, sabertooth_mode::INDEPENDENT);
+    nh_private.param("left_motor_index", left_motor_index, 0);
+    nh_private.param("right_motor_index", right_motor_index, 1);
+    ROS_WARN_STREAM("driver_mode: " << driver_mode << "  left_motor_index: " << left_motor_index << "  right_motor_index: " << right_motor_index); //TODO: remove if working...
+
     // Params
     ros::NodeHandle param("~");
     param.param("testing", testing_sabertooth, false);
@@ -41,6 +48,11 @@ int main(int argc, char **argv)
     ros::Subscriber propulsionSub = n.subscribe("multiplexed_propulsion", 1000, actuation_send_propulsion_twist);
     ros::Subscriber conveyorSub = n.subscribe("multiplexed_conveyor", 1000, actuation_send_conveyor_twist);
     ros::Subscriber lightingSub = n.subscribe("multiplexed_lighting", 1000, actuation_send_lighting_bool);
+
+    ros::Subscriber independentInputsSub = n.subscribe("motor_mode/independent_inputs", 1000, actuation_send_independent_inputs);
+
+    pub_motor_inputs = n.advertise<nautonomous_msgs::IndependentInputs>("motor_inputs", 1, true);
+
     ROS_INFO("Subscribed to topics for multiplexer");
 
     //Publisher
