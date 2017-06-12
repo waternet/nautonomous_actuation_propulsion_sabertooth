@@ -1,0 +1,4 @@
+<launch>
+    <include file="$(find nautonomous_actuation_synchronizer)/launch/independent_inputs_publisher.launch"/>
+	<include file="$(find nautonomous_actuation_synchronizer)/launch/command_actuation.launch"/>
+</launch>

@@ -88,20 +88,7 @@ void actuation_send_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propu
 			int bytes = actuation_serial->write(&straightCommand[0], 4);
 			ros::Duration(0.01).sleep();
 			bytes += actuation_serial->write(&turnCommand[0], 4);
-/*
-			std::string responce;
-			responce = "";
-			actuation_serial->read(responce, 1);
 
-			//ROS_INFO("Serial responce after sending: %s\n", responce.c_str());
-			if(responce.compare("P") == 0){
-				ROS_INFO("Right data send!");	
-			}else if(responce.compare("W") == 0){
-				ROS_INFO("Wrong data send!");
-			}
-
-			actuation_serial->flushInput();
-*/	
 		} else {
 			//ROS_INFO("Actuation not running");
 		}
@@ -145,8 +132,8 @@ void actuation_send_independent_inputs(const nautonomous_msgs::IndependentInputs
     	//Send to the first motor driver
     	int bytes = actuation_serial->write(&left_motor_command[0], 4);
 
-    	ros::Rate r(100);
-    	r.sleep(); //wait 0.01
+    	ros::Duration(0.01).sleep();
+
 		  ROS_INFO("Sending twist message");
     	//Send to the second motor driver
     	bytes += actuation_serial->write(&right_motor_command[0], 4);
