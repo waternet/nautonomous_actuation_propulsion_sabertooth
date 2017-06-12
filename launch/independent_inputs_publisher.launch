@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Launch independent_inputs_publisher -->
+  <node name="independent_inputs_publisher" pkg="nautonomous_actuation_synchronizer" type="independent_inputs_publisher" output="screen">
+    <remap from="/independent_inputs_publisher/independent_inputs" to="/independent_inputs"/>
+  </node>
+</launch>
