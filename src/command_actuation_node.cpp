@@ -32,11 +32,17 @@ int main(int argc, char **argv)
     nh_private.param("right_motor_index", right_motor_index, 1);
     ROS_WARN_STREAM("driver_mode: " << driver_mode << "  left_motor_index: " << left_motor_index << "  right_motor_index: " << right_motor_index); //TODO: remove if working...
 
-    // Params
+    // Testing and debugging
     ros::NodeHandle param("~");
-    param.param("testing", testing_sabertooth, false);
-    ROS_INFO("Testing sabertooth: %d", testing_sabertooth);
+    param.param("serial_available", serial_available, true);
+    param.param("serial_port", actuation_serial_port, std::string("/dev/nautonomous/actuation"));
 
+    param.param("test_motors", test_motors, false);
+    param.param("debug_motors", debug_motors, false);
+    ROS_INFO("Testing motors: %d", test_motors);
+    ROS_INFO("Debugging motors: %d", debug_motors);
+
+    // Motor addresses
     int propulsion_address_value = 0, conveyor_address_value = 0;
     param.param("propulsion_address", propulsion_address_value, 128);
     param.param("conveyor_address", conveyor_address_value, 132);
@@ -50,9 +56,19 @@ int main(int argc, char **argv)
     ros::Subscriber lightingSub = n.subscribe("multiplexed_lighting", 1000, actuation_send_lighting_bool);
 
     ros::Subscriber independentInputsSub = n.subscribe("motor_mode/independent_inputs", 1000, actuation_send_independent_inputs);
-
+    ros::Subscriber independentInputsTwistSub = n.subscribe("motor_mode/twist/independent_inputs", 1000, actuation_independent_propulsion_twist);
+    
     pub_motor_inputs = n.advertise<nautonomous_msgs::IndependentInputs>("motor_inputs", 1, true);
 
+    g_twist_pub = n.advertise<visualization_msgs::Marker> ("visualization_marker_twist", 0);
+    g_left_pub = n.advertise<visualization_msgs::Marker> ("visualization_marker_left", 0);
+    g_right_pub = n.advertise<visualization_msgs::Marker> ("visualization_marker_right", 0);
+    
+    g_left_forward_pub = n.advertise<visualization_msgs::Marker> ("visualization_marker_left_forward", 0);
+    g_right_forward_pub = n.advertise<visualization_msgs::Marker> ("visualization_marker_right_forward", 0);
+    g_left_backward_pub = n.advertise<visualization_msgs::Marker> ("visualization_marker_left_backward", 0);
+    g_right_backward_pub = n.advertise<visualization_msgs::Marker> ("visualization_marker_right_backward", 0);
+    
     ROS_INFO("Subscribed to topics for multiplexer");
 
     //Publisher
@@ -60,14 +76,17 @@ int main(int argc, char **argv)
 			1000);
 
     //Init the serial port for the motors
-    //<!--TODO check if the serial connections was innited correctly.
-    if(!testing_sabertooth){
-      if(actuation_init_serial()){
-        ROS_INFO("Actuation initted successfully");
-        run_watchdog();
-      }else{
-        ROS_WARN("Could not init Actuation");
-      }
+    if(serial_available){
+        if(actuation_init_serial()){
+          ROS_INFO("Actuation initted successfully");
+          run_watchdog();
+        } else{
+          ROS_WARN("Could not init Actuation");
+          // Error occured while opening the serial port.
+          return 1;
+        }
+    } else {
+      ROS_INFO("Serial is not available.");
     }
 
     signal(SIGINT, shutdownHandler);

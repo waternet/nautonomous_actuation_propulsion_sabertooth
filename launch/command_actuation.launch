@@ -1,9 +1,16 @@
 <launch>
 
 	<arg name="log" default="false"/>
-	<arg name="testing" default="false"/>
+	
 	<arg name="propulsion_address" default="128"/>
 	<arg name="conveyor_address" default="132"/>
+
+	<arg name="test_sabertooth" default="false"/>
+	<arg name="test_motors" default="true"/>
+	<arg name="debug_motors" default="true"/>
+
+	<arg name="serial_port" default="/dev/nautonomous/actuation"/>
+	<arg name="serial_available" default="false"/>
 
 	<node name="command_actuation_node" pkg="nautonomous_actuation_synchronizer" type="command_actuation_node" output="screen">
 		<!-- Inputs -->
@@ -12,11 +19,15 @@
 		<remap from="lighting" to="/actuation/lighting/autonomous" />
 
 		<!-- Parameters -->
-		<param name="testing" type="bool" value="$(arg testing)"/>
+		<param name="test_sabertooth" type="bool" value="$(arg test_sabertooth)"/>
+		<param name="test_motors" type="bool" value="$(arg test_motors)"/>
+		<param name="debug_motors" type="bool" value="$(arg debug_motors)"/>
+		<param name="serial_available" type="bool" value="$(arg serial_available)"/>
+		
 		<param name="propulsion_address" type="int" value="$(arg propulsion_address)"/>
 		<param name="conveyor_address" type="int" value="$(arg conveyor_address)"/>
 		<!-- Outputs -->
-
+		<param name="serial_port" value="$(arg serial_port)"/>
 	</node>
 
 	<node pkg="rosbag" type="record" name="rosbag_output_send" args="record -o /media/NautonomousBlackBox/bags/Output/send /actuation/propulsion/autonomous /actuation/conveyor/autonomous /actuation/lighting/autonomous" output="screen" if="$(arg log)"/>

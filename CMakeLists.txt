@@ -9,6 +9,8 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   rostest
   nautonomous_msgs
+  #include "visualization_msgs/MarkerArray.h"
+
 )
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -L/usr/local/lib ${CMAKE_CXX_FLAGS} -g")

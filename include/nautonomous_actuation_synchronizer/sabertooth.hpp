@@ -44,8 +44,23 @@
 #include "ros/ros.h"
 #include "geometry_msgs/Twist.h"
 
+#include "visualization_msgs/Marker.h"
+#include "visualization_msgs/MarkerArray.h"
+
 uint8_t propulsion_address;
 uint8_t conveyor_address;
+
+bool test_sabertooth;
+bool test_motors;
+bool debug_motors;
+
+ros::Publisher g_twist_pub;
+ros::Publisher g_left_pub;
+ros::Publisher g_right_pub;
+ros::Publisher g_left_forward_pub;
+ros::Publisher g_right_forward_pub;
+ros::Publisher g_left_backward_pub;
+ros::Publisher g_right_backward_pub;
 
 namespace sabertooth_mode {
 static constexpr int INDEPENDENT = 0;
@@ -57,6 +72,11 @@ void sabertooth_advanced_process_propulsion_twist(uint8_t* straightCommand, uint
 void sabertooth_advanced_process_conveyor_twist(uint8_t* motor1, uint8_t* motor2, const geometry_msgs::Twist::ConstPtr& twist);
 void sabertooth_advanced_serial_timeout(uint8_t* driver1, uint8_t* driver2);
 void sabertooth_advanced_process_propulsion_independent_inputs(uint8_t* left_motor_command, uint8_t* right_motor_command, const nautonomous_msgs::IndependentInputs::ConstPtr& msg);
+
+void sabertooth_individual_propulsion_linear_model(uint8_t* left_motor_command, uint8_t* right_motor_command, const geometry_msgs::Twist::ConstPtr& twist);
+
+double limit_variable(double variable, double limit);
+void publish_arrow_marker(double position_x, double position_y, double theta, double magnitude, int i, ros::Publisher g_pub);
 
 extern ros::Publisher pub_motor_inputs;
 // Parameters

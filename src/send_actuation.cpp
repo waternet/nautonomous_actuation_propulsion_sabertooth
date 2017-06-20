@@ -13,33 +13,43 @@
  *\return
  */
 bool actuation_init_serial() {
-	ROS_INFO("Opening Sabertooth drive, testing %d", testing_sabertooth);
-	testing_sabertooth = false;
+	ROS_INFO("Opening Sabertooth drive, testing %d", test_sabertooth);
 
-	if(!testing_sabertooth){
+	if(!test_sabertooth){
 		ROS_INFO("Opening Sabertooth driver");
+		//Open serial port sabertooth at 9600 baud with 250 ms timeout.
+		actuation_serial = new serial::Serial(string("/dev/nautonomous/actuation"),115200,
+				serial::Timeout::simpleTimeout(250));
+		ROS_INFO("Serial open: %d", actuation_serial->isOpen());
+
+		if(actuation_serial->isOpen()){
+			ros::Duration(1).sleep();
+			
+			//Prepare the serial timeout for both motor drivers and send them.
+			uint8_t serial_timeout_propulsion[4], serial_timeout_conveyor[4];
+			sabertooth_advanced_serial_timeout(&serial_timeout_propulsion[0], &serial_timeout_conveyor[0]);
+
+			//Write timeout to propulsion motor driver
+			int bytes = actuation_serial->write(&serial_timeout_propulsion[0], 4);
+
+			ros::Duration(0.01).sleep();
+
+			//Write timeout to conveyor belt motor driver
+			bytes += actuation_serial->write(&serial_timeout_conveyor[0], 4);
+			return bytes;
+		} else {
+			//Exit false since we could not open the actuation_serial connection.
+			return false;
+		}
+	} else { 
+
+	 	ROS_INFO("Opening Sabertooth driver");
 		//Open serial port sabertooth at 9600 baud with 250 ms timeout.
 
 		actuation_serial = new serial::Serial(string("/dev/nautonomous/actuation"),115200, serial::Timeout::simpleTimeout(250));
 		ROS_INFO("Serial open: %d", actuation_serial->isOpen());
 
-		//   (Deprecated, done by actuation platform)
-		//ros::Duration(1).sleep();
-		
-		//Prepare the serial timeout for both motor drivers and send them.
-		//uint8_t serial_timeout_propulsion[4], serial_timeout_conveyor[4];
-		//sabertooth_advanced_serial_timeout(&serial_timeout_propulsion[0], &serial_timeout_conveyor[0]);
-
-		//Write timeout to propulsion motor driver
-		//int bytes = actuation_serial->write(&serial_timeout_propulsion[0], 4);
-
-		//ros::Duration(0.01).sleep();
-
-		//Write timeout to conveyor belt motor driver
-		//bytes += actuation_serial->write(&serial_timeout_conveyor[0], 4);
-		return 1;
-	} else {
-		return 0;
+		return actuation_serial->isOpen();
 	}
 }
 
@@ -80,7 +90,7 @@ void actuation_send_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propu
 
 
 
-	if(actuation_serial && !testing_sabertooth){
+	if(actuation_serial && !test_sabertooth){
 		//Check status watchdog
 		if(status_msg.level == 0){
 			//ROS_INFO("Actuation running");
@@ -142,4 +152,33 @@ void actuation_send_independent_inputs(const nautonomous_msgs::IndependentInputs
 	#endif
   	} else {
   	}
+}
+
+/**
+ *\brief Send propulsion twist msg.
+ *\params const geometry_msgs::Twist propulsion
+ *\return
+ */
+void actuation_independent_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propulsion) {
+
+	uint8_t leftCommand[4], rightCommand[4];
+
+	sabertooth_individual_propulsion_linear_model(&leftCommand[0], &rightCommand[0], propulsion);
+
+	if(serial_available){
+		if(actuation_serial){
+			//Check status watchdog
+			if(status_msg.level == 0){
+				//ROS_INFO("Actuation running");
+				
+				int bytes = actuation_serial->write(&leftCommand[0], 4);
+				ros::Duration(0.01).sleep();
+				bytes += actuation_serial->write(&rightCommand[0], 4);
+
+			} else {
+				//ROS_INFO("Actuation not running");
+			}
+			
+		}
+	}
 }
