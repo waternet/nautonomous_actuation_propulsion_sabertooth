@@ -64,11 +64,6 @@ int main(int argc, char **argv)
     g_left_pub = n.advertise<visualization_msgs::Marker> ("visualization_marker_left", 0);
     g_right_pub = n.advertise<visualization_msgs::Marker> ("visualization_marker_right", 0);
     
-    g_left_forward_pub = n.advertise<visualization_msgs::Marker> ("visualization_marker_left_forward", 0);
-    g_right_forward_pub = n.advertise<visualization_msgs::Marker> ("visualization_marker_right_forward", 0);
-    g_left_backward_pub = n.advertise<visualization_msgs::Marker> ("visualization_marker_left_backward", 0);
-    g_right_backward_pub = n.advertise<visualization_msgs::Marker> ("visualization_marker_right_backward", 0);
-    
     ROS_INFO("Subscribed to topics for multiplexer");
 
     //Publisher
