@@ -5,8 +5,8 @@
 #include "ros/ros.h"
 #include "geometry_msgs/Twist.h"
 
-#include "../../include/nautonomous_actuation_synchronizer/sabertooth.hpp"
-#include "../../include/nautonomous_actuation_synchronizer/send_actuation.hpp"
+#include "../../include/nautonomous_motor_sabertooth/sabertooth.hpp"
+#include "../../include/nautonomous_motor_sabertooth/send_actuation.hpp"
 
 TEST(SabertoothBasicSuite, testMessage)
 {

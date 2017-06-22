@@ -12,7 +12,7 @@
 	<arg name="serial_port" default="/dev/nautonomous/actuation"/>
 	<arg name="serial_available" default="false"/>
 
-	<node name="command_actuation_node" pkg="nautonomous_actuation_synchronizer" type="command_actuation_node" output="screen">
+	<node name="command_actuation_node" pkg="nautonomous_motor_sabertooth" type="command_actuation_node" output="screen">
 		<!-- Inputs -->
 		<remap from="propulsion" to="/actuation/propulsion/autonomous" />
 		<remap from="conveyor" to="/actuation/conveyor/autonomous" />

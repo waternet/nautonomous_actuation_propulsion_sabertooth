@@ -5,7 +5,7 @@
  *      Author: zeeuwe01
  */
 
-#include "../include/nautonomous_actuation_synchronizer/send_actuation.hpp"
+#include "../include/nautonomous_motor_sabertooth/send_actuation.hpp"
 
 /**
  *\brief  Initialized the serial connection, set the used port and bautrate.

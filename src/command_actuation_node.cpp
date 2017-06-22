@@ -1,4 +1,4 @@
-#include "../include/nautonomous_actuation_synchronizer/command_actuation_node.hpp"
+#include "../include/nautonomous_motor_sabertooth/command_actuation_node.hpp"
 
 /**
  * \brief Shutdown handler, deinit serial, call ros::shutdown()
