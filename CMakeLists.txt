@@ -9,7 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   rostest
   nautonomous_msgs
-  #include "visualization_msgs/MarkerArray.h"
+  visualization_msgs
 
 )
 
