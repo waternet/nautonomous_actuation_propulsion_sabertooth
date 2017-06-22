@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(nautonomous_actuation_synchronizer)
+project(nautonomous_motor_sabertooth)
 
 find_package(catkin REQUIRED COMPONENTS
   actionlib
