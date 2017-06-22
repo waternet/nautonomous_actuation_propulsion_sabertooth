@@ -57,10 +57,6 @@ bool debug_motors;
 ros::Publisher g_twist_pub;
 ros::Publisher g_left_pub;
 ros::Publisher g_right_pub;
-ros::Publisher g_left_forward_pub;
-ros::Publisher g_right_forward_pub;
-ros::Publisher g_left_backward_pub;
-ros::Publisher g_right_backward_pub;
 
 namespace sabertooth_mode {
 static constexpr int INDEPENDENT = 0;
