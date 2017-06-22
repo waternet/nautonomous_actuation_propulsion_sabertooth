@@ -1,0 +1,3 @@
+driver_mode: 0 # 0: INDEPENDENT, 1: MIXED
+left_motor_index: 1 # 0: motor 1, 1: motor 2
+right_motor_index: 0 # 0: motor 1, 1: motor 2
