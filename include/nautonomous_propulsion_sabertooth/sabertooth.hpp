@@ -40,12 +40,15 @@
 #include <stdio.h>                  // Need to be able to use standard output "putchar" command
 #include <stdint.h>                 // Include your standard types definition file to accomodate the C99 uint_x types
 #include <algorithm>                // std::max and std::min
-#include <nautonomous_msgs/IndependentInputs.h>
-#include "ros/ros.h"
-#include "geometry_msgs/Twist.h"
 
-#include "visualization_msgs/Marker.h"
-#include "visualization_msgs/MarkerArray.h"
+#include <ros/ros.h>
+
+#include <geometry_msgs/Twist.h>
+
+#include <nautonomous_propulsion_msgs/IndividualMotorPropulsion.h>
+
+#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
 
 uint8_t propulsion_address;
 uint8_t conveyor_address;
@@ -67,7 +70,7 @@ void sabertooth_test_message(uint8_t address, uint8_t command, uint8_t value, ui
 void sabertooth_advanced_process_propulsion_twist(uint8_t* straightCommand, uint8_t* turnCommand, const geometry_msgs::Twist::ConstPtr& twist);
 void sabertooth_advanced_process_conveyor_twist(uint8_t* motor1, uint8_t* motor2, const geometry_msgs::Twist::ConstPtr& twist);
 void sabertooth_advanced_serial_timeout(uint8_t* driver1, uint8_t* driver2);
-void sabertooth_advanced_process_propulsion_independent_inputs(uint8_t* left_motor_command, uint8_t* right_motor_command, const nautonomous_msgs::IndependentInputs::ConstPtr& msg);
+void sabertooth_advanced_process_propulsion_independent_inputs(uint8_t* left_motor_command, uint8_t* right_motor_command, const nautonomous_propulsion_msgs::IndividualMotorPropulsion::ConstPtr& msg);
 
 void sabertooth_individual_propulsion_linear_model(uint8_t* left_motor_command, uint8_t* right_motor_command, const geometry_msgs::Twist::ConstPtr& twist);
 

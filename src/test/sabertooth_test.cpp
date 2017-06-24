@@ -2,11 +2,12 @@
 #include <gtest/gtest.h>
 #include <boost/shared_ptr.hpp>
 
-#include "ros/ros.h"
-#include "geometry_msgs/Twist.h"
+#include <ros/ros.h>
 
-#include "../../include/nautonomous_motor_sabertooth/sabertooth.hpp"
-#include "../../include/nautonomous_motor_sabertooth/send_actuation.hpp"
+#include <geometry_msgs/Twist.h>
+
+#include <nautonomous_propulsion_sabertooth/sabertooth.hpp>
+#include <nautonomous_propulsion_sabertooth/send_actuation.hpp>
 
 TEST(SabertoothBasicSuite, testMessage)
 {

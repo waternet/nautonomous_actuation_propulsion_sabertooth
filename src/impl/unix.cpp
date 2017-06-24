@@ -32,7 +32,7 @@
 #include <mach/mach.h>
 #endif
 
-#include "../../include/nautonomous_motor_sabertooth/impl/unix.hpp"
+#include "../../include/nautonomous_propulsion_sabertooth/impl/unix.hpp"
 
 #ifndef TIOCINQ
 #ifdef FIONREAD
