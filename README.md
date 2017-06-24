@@ -1,6 +1,6 @@
-# nautonomous actuation synchronizer {#nautonomous_actuation_synchronizer}
+# nautonomous propulsion sabertooth {#nautonomous_propulsion_sabertooth}
 
-Package used to write commands to the serial output. command_actuation_node.cpp receives them from the nautonomous_actuation_selector, sabertooth.cpp transforms them to sabertooth commands, send_actuation.cpp send them to the serial. serial.cpp has the actual serial functions. 
+Package used to write commands to the serial output. command_actuation_node.cpp receives them from the nautonomous_propulsion_sabertooth, sabertooth.cpp transforms them to sabertooth commands, send_actuation.cpp send them to the serial. serial.cpp has the actual serial functions. 
 
 
 command_actuation_node.cpp

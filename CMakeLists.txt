@@ -1,25 +1,18 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(nautonomous_motor_sabertooth)
+project(nautonomous_propulsion_sabertooth)
 
 find_package(catkin REQUIRED COMPONENTS
-  actionlib
-  actionlib_msgs
-  message_generation
   roscpp
   std_msgs
   rostest
-  nautonomous_msgs
   visualization_msgs
-
 )
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -L/usr/local/lib ${CMAKE_CXX_FLAGS} -g")
 
 catkin_package(
-    CATKIN_DEPENDS nautonomous_msgs
-)
 
-include_directories(nautonomous_msgs)
+)
 
 include_directories(
   include

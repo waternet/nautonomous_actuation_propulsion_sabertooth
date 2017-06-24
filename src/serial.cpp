@@ -16,12 +16,12 @@
 # define alloca __builtin_alloca
 #endif
 
-#include "../include/nautonomous_motor_sabertooth/serial.hpp"
+#include "../include/nautonomous_propulsion_sabertooth/serial.hpp"
 
 #ifdef _WIN32
 #include "serial/impl/win.h"
 #else
-#include "../include/nautonomous_motor_sabertooth/impl/unix.hpp"
+#include "../include/nautonomous_propulsion_sabertooth/impl/unix.hpp"
 #endif
 
 using std::invalid_argument;

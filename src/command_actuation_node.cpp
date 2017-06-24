@@ -1,11 +1,10 @@
-#include "../include/nautonomous_motor_sabertooth/command_actuation_node.hpp"
+#include <nautonomous_propulsion_sabertooth/command_actuation_node.hpp>
 
 /**
  * \brief Shutdown handler, deinit serial, call ros::shutdown()
  * \param int sig
  * \return null 
  */
-
 void shutdownHandler(int sig)
 {
   // Deinit serial before shutdown down.
@@ -51,12 +50,12 @@ int main(int argc, char **argv)
     ROS_INFO("Set propulsion_address to %u and conveyor_address to %u", propulsion_address, conveyor_address);
 
     // Subscribe to propulsion, conveyor and lighting topics.
-    ros::Subscriber propulsionSub = n.subscribe("multiplexed_propulsion", 1000, actuation_send_propulsion_twist);
-    ros::Subscriber conveyorSub = n.subscribe("multiplexed_conveyor", 1000, actuation_send_conveyor_twist);
-    ros::Subscriber lightingSub = n.subscribe("multiplexed_lighting", 1000, actuation_send_lighting_bool);
+    ros::Subscriber propulsionSub = n.subscribe("/navigation/propulsion/twist", 1000, actuation_send_propulsion_twist);
+    ros::Subscriber conveyorSub = n.subscribe("/namespace/conveyor/twist", 1000, actuation_send_conveyor_twist);
+    ros::Subscriber lightingSub = n.subscribe("/namespace/lighting/state", 1000, actuation_send_lighting_bool);
 
-    ros::Subscriber independentInputsSub = n.subscribe("motor_mode/independent_inputs", 1000, actuation_send_independent_inputs);
-    ros::Subscriber independentInputsTwistSub = n.subscribe("motor_mode/twist/independent_inputs", 1000, actuation_independent_propulsion_twist);
+    ros::Subscriber differentialMotorPropulsionSub = n.subscribe("/propulsion/sabertooth/differential", 1000, actuation_send_independent_inputs);
+    ros::Subscriber differentialMotorPropulsionTwistSub = n.subscribe("/propulsion/sabertooth/differential/twist", 1000, actuation_independent_propulsion_twist);
     
     pub_motor_inputs = n.advertise<nautonomous_msgs::IndependentInputs>("motor_inputs", 1, true);
 

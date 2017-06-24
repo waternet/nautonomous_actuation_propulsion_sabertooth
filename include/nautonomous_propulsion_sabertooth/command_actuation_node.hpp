@@ -9,15 +9,18 @@
 #define COMMANDACTUATIONNODE_HPP_
 
 #include <signal.h>
+
 #include "ros/ros.h"
-#include "nautonomous_msgs/IndependentInputs.h"
+
 #include "send_actuation.hpp"
 #include "sabertooth.hpp"
 #include "watchdog.hpp"
 
+#include "nautonomous_propulsion_msgs/IndividualMotorPropulsion.h"
+
 void shutdownHandler(int sig);
 
-nautonomous_msgs::IndependentInputs* independent_inputs_message = nullptr;
+nautonomous_propulsion_msgs::IndividualMotorPropulsion* individual_motor_propulsion_message = nullptr;
 
 ros::Publisher pub_motor_inputs;
 

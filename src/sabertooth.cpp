@@ -1,4 +1,4 @@
-#include "../include/nautonomous_motor_sabertooth/sabertooth.hpp"
+#include "../include/nautonomous_propulsion_sabertooth/sabertooth.hpp"
 
 /**
  *\brief Create test message for sabertooth

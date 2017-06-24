@@ -36,7 +36,6 @@
 #ifndef SERIAL_H
 #define SERIAL_H
 
-#include <ros/ros.h>
 #include <limits>
 #include <vector>
 #include <string>
@@ -45,6 +44,8 @@
 #include <exception>
 #include <stdexcept>
 #include <stdint.h>
+
+#include <ros/ros.h>
 
 #define THROW(exceptionClass, message) throw exceptionClass(__FILE__, \
 __LINE__, (message) )
