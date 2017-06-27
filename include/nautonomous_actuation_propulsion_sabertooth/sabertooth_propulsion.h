@@ -15,21 +15,21 @@
 
 class SabertoothPropulsion{
     private:
-        ActuationWatchdog* actuation_watchdog;
-        SabertoothPropulsionDriver* sabertooth_propulsion_driver;
-        SabertoothSerial* sabertooth_serial;
+        ActuationWatchdog* actuation_watchdog_ = nullptr;
+        SabertoothPropulsionDriver* sabertooth_propulsion_driver_ = nullptr;
+        SabertoothSerial* sabertooth_serial_ = nullptr;
 
-        ros::Subscriber left_propulsion_subscriber;
-        ros::Subscriber right_propulsion_subscriber;
-        ros::Subscriber twist_propulsion_subscriber;
+        ros::Subscriber left_propulsion_subscriber_;
+        ros::Subscriber right_propulsion_subscriber_;
+        ros::Subscriber twist_propulsion_subscriber_;
 
-        void callback_propulsion_twist(const geometry_msgs::Twist::ConstPtr& twist_message);
+        void callbackPropulsionTwist(const geometry_msgs::Twist::ConstPtr& twist_message);
 
-        void callback_propulsion_left(const std_msgs::Float32::ConstPtr& left_message);
-        void callback_propulsion_right(const std_msgs::Float32::ConstPtr& right_message);
+        void callbackPropulsionLeft(const std_msgs::Float32::ConstPtr& left_message);
+        void callbackPropulsionRight(const std_msgs::Float32::ConstPtr& right_message);
 
     public:
-        SabertoothPropulsion();
+        SabertoothPropulsion(ros::NodeHandle node_handle, ros::NodeHandle private_node_handle);
         ~SabertoothPropulsion();
 
         void checkWatchdog();

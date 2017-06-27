@@ -8,7 +8,7 @@ class SabertoothMotorDriver
     private:
          void setChecksum(uint8_t* packet);
 
-         uint8_t address;
+         uint8_t address_;
 
     public:
         SabertoothMotorDriver(uint8_t motor_address);

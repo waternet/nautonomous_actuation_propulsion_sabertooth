@@ -1,13 +1,12 @@
 #include <nautonomous_actuation_propulsion_sabertooth/actuation_watchdog.h>
 
-ActuationWatchdog::ActuationWatchdog(){
+ActuationWatchdog::ActuationWatchdog(ros::NodeHandle node_handle){
     //Initialize status message
-    status_msg.level = -1;
-    status_msg.message = "Unknown";
+    status_msg_.level = -1;
+    status_msg_.message = "Unknown";
 
     //Publisher
-    ros::NodeHandle node_handle;
-    watchdog_publisher = node_handle.advertise<diagnostic_msgs::DiagnosticStatus>("/actuation/propulsion/watchdog", 1000);
+    watchdog_publisher_ = node_handle.advertise<diagnostic_msgs::DiagnosticStatus>("/actuation/propulsion/watchdog", 1000);
 
 }
 
@@ -17,7 +16,7 @@ bool ActuationWatchdog::checkStatus(std::string response)
 
     if(adjustStatus(temp_status_msg))
     {
-        watchdog_publisher.publish(status_msg); 
+        watchdog_publisher_.publish(status_msg_); 
     } 
 }
 
@@ -42,10 +41,10 @@ diagnostic_msgs::DiagnosticStatus ActuationWatchdog::createStatus(std::string re
 bool ActuationWatchdog::adjustStatus(diagnostic_msgs::DiagnosticStatus temp_status_msg){
     
     //Publish only new status
-    if(temp_status_msg.level != status_msg.level)
+    if(temp_status_msg.level != status_msg_.level)
     {
-        status_msg.level = temp_status_msg.level;
-        status_msg.message = temp_status_msg.message;
+        status_msg_.level = temp_status_msg.level;
+        status_msg_.message = temp_status_msg.message;
 
         return true;
     }
@@ -54,11 +53,11 @@ bool ActuationWatchdog::adjustStatus(diagnostic_msgs::DiagnosticStatus temp_stat
 
 bool ActuationWatchdog::isActive()
 {
-    return (status_msg.level == 0);
+    return (status_msg_.level == 0);
 }
 
-void ActuationWatchdog::setUnconnectedStatus()
+void ActuationWatchdog::setNotConnectedStatus()
 {
-    status_msg.level = 2;
-    status_msg.message = "Not connected";
+    status_msg_.level = 2;
+    status_msg_.message = "Not connected";
 }

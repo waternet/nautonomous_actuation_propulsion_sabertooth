@@ -3,7 +3,7 @@
 	<arg name="propulsion_address" default="128"/>
 
 	<arg name="serial_port" default="/dev/nautonomous/actuation"/>
-	<arg name="serial_available" default="true"/>
+	<arg name="serial_available" default="false"/>
 
 	<node name="nautonomous_actuation_propulsion_sabertooth" pkg="nautonomous_actuation_propulsion_sabertooth" type="sabertooth_propulsion_node" output="screen">
 		<!-- Parameters -->

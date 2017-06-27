@@ -21,7 +21,10 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "actuation_propulsion_sabertooth_node");
 
-    sabertooth_propulsion = new SabertoothPropulsion();
+    ros::NodeHandle node_handle;
+    ros::NodeHandle private_node_handle("~");
+
+    sabertooth_propulsion = new SabertoothPropulsion(node_handle, private_node_handle);
 
     // When the program exists, go to the shutdown handler first.
     signal(SIGINT, shutdownHandler);

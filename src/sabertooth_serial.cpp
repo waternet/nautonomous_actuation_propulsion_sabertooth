@@ -1,24 +1,23 @@
 
 #include <nautonomous_actuation_propulsion_sabertooth/sabertooth_serial.h>
 
-SabertoothSerial::SabertoothSerial()
+SabertoothSerial::SabertoothSerial(ros::NodeHandle private_node_handle)
 {
-    ros::NodeHandle node_handle("~");
-    node_handle.param("serial_port", serial_port, std::string("/dev/nautonomous/actuation"));
-    node_handle.param("serial_baud", serial_baud, 115200);
-    node_handle.param("serial_timeout", serial_timeout, 250);
-    node_handle.param("serial_available", serial_available, true);
+    private_node_handle.param("serial_port", serial_port_, std::string("/dev/nautonomous/actuation"));
+    private_node_handle.param("serial_baud", serial_baud_, 115200);
+    private_node_handle.param("serial_timeout", serial_timeout_, 250);
+    private_node_handle.param("serial_available", serial_available_, true);
 
     initialize();
 }
 
 SabertoothSerial::~SabertoothSerial()
 {
-    if(propulsion_serial)
+    if(propulsion_serial_)
 	{
-		propulsion_serial->close();
-		delete propulsion_serial;
-		propulsion_serial = nullptr;
+		propulsion_serial_->close();
+		delete propulsion_serial_;
+		propulsion_serial_ = nullptr;
 	}
 }
 
@@ -29,10 +28,30 @@ SabertoothSerial::~SabertoothSerial()
  */
 bool SabertoothSerial::initSerial() 
 {   
-		propulsion_serial = new serial::Serial(serial_port, serial_baud,
-		    serial::Timeout::simpleTimeout(serial_timeout));
+        bool port_open = false;
 
-		return isOpen();
+        if (serial_available_)
+        {
+            try
+            {
+		        propulsion_serial_ = new serial::Serial(serial_port_, serial_baud_,
+		            serial::Timeout::simpleTimeout(serial_timeout_));
+
+                port_open = propulsion_serial_->isOpen();
+            }
+            catch(serial::IOException ex)
+            {
+                ROS_ERROR("IOException opening serial port: %s", ex.what());
+                port_open = false;
+                propulsion_serial_ = nullptr;
+            }
+        } 
+        else 
+        {
+            propulsion_serial_ = nullptr;
+        }
+
+		return port_open;
 }
 
 /**
@@ -41,20 +60,19 @@ bool SabertoothSerial::initSerial()
  */
 bool SabertoothSerial::initialize()
 {
-    if(serial_available)
+
+    if(initSerial())
     {
-        if(initSerial())
-        {
-            return 1;
-        } 
-        else
-        {
-            ROS_ERROR("Could not init Actuation");
-        }
+        return 1;
     } 
-    else 
+    else if(serial_available_)
     {
-        ROS_WARN("Serial is not available.");
+        ROS_ERROR("Could not init Actuation");
+        exit(0);
+    } 
+    else
+    {
+        ROS_WARN("Serial not used");
     }
 
 	return 0;
@@ -62,30 +80,32 @@ bool SabertoothSerial::initialize()
 
 bool SabertoothSerial::isOpen() 
 {
-    if(propulsion_serial){
-        return propulsion_serial->isOpen();
+    if(propulsion_serial_){
+        return propulsion_serial_->isOpen();
     }
 	return false;
 }
 
 void SabertoothSerial::readStatus(std::string response)
 {
-    if(propulsion_serial){
-        propulsion_serial->read(response, 1); //status mesage only has 1 byte
+    if(isOpen())
+    {
+        propulsion_serial_->read(response, 1); //status mesage only has 1 byte
     }
 }
 
 void SabertoothSerial::writePacket(uint8_t* packet)
 {
-    if(propulsion_serial)
+    if(isOpen())
     {
-        propulsion_serial->write(&packet[0], 4); // Packet has 4 arguments.
+        propulsion_serial_->write(&packet[0], 4); // Packet has 4 arguments.
     }
 }
 
 void SabertoothSerial::flushInput()
 {
-    if(propulsion_serial){
-        propulsion_serial->flushInput();
+    if(isOpen())
+    {
+        propulsion_serial_->flushInput();
     }
 }

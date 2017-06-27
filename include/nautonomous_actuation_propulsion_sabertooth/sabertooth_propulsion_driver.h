@@ -16,16 +16,10 @@
 class SabertoothPropulsionDriver
 {
     private: 
-        SabertoothMotorDriver* sabertooth_motor_driver;
-
-        uint8_t propulsion_address;
-
-        bool test_sabertooth;
-        bool test_motors;
-        bool debug_motors;
+        SabertoothMotorDriver* sabertooth_motor_driver_ = nullptr;
 
     public:
-        SabertoothPropulsionDriver();
+        SabertoothPropulsionDriver(ros::NodeHandle private_node_handle);
         ~SabertoothPropulsionDriver();
 
         void processTwist(const geometry_msgs::Twist::ConstPtr& twist_message, uint8_t* straight_command, uint8_t* turn_command);

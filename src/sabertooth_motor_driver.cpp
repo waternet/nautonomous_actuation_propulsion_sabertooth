@@ -2,7 +2,7 @@
 
 SabertoothMotorDriver::SabertoothMotorDriver(uint8_t motor_address)
 {
-	address = motor_address;
+	address_ = motor_address;
 }
 
 /**
@@ -15,7 +15,7 @@ SabertoothMotorDriver::SabertoothMotorDriver(uint8_t motor_address)
  */
 void SabertoothMotorDriver::fillPacket(uint8_t command, uint8_t value, uint8_t* packet)
 {
-	packet[0] = address;
+	packet[0] = address_;
 	packet[1] = command;
 	packet[2] = value;
 

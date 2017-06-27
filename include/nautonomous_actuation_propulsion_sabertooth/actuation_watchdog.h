@@ -8,21 +8,21 @@
 class ActuationWatchdog
 {
     private: 
-        ros::Publisher watchdog_publisher;
-        diagnostic_msgs::DiagnosticStatus status_msg;
+        ros::Publisher watchdog_publisher_;
+        diagnostic_msgs::DiagnosticStatus status_msg_;
 
         diagnostic_msgs::DiagnosticStatus createStatus(std::string response);
 
         bool adjustStatus(diagnostic_msgs::DiagnosticStatus temp_status_msg);
 
     public:
-        ActuationWatchdog();
+        ActuationWatchdog(ros::NodeHandle node_handle);
 
         bool checkStatus(std::string response);
 
         bool isActive();
 
-        void setUnconnectedStatus();
+        void setNotConnectedStatus();
 
 };
 

@@ -1,22 +1,21 @@
 #include <nautonomous_actuation_propulsion_sabertooth/sabertooth_propulsion_driver.h>
 
-SabertoothPropulsionDriver::SabertoothPropulsionDriver()
+SabertoothPropulsionDriver::SabertoothPropulsionDriver(ros::NodeHandle private_node_handle)
 {
     // Motor address
-    ros::NodeHandle node_handle("~");
-    int address = 0; // param does not allow uint8_t
-    node_handle.param("propulsion_address", address, 128); //128 default propulsion address
-    propulsion_address = (uint8_t) address;
+    int address = 128; // param does not allow uint8_t
+    private_node_handle.param("propulsion_address", address, 128); //128 default propulsion address
+    //TODO exception when the address is not in range from the manual.
 
-    sabertooth_motor_driver = new SabertoothMotorDriver(propulsion_address);
+    sabertooth_motor_driver_ = new SabertoothMotorDriver((uint8_t) address);
 }
 
 SabertoothPropulsionDriver::~SabertoothPropulsionDriver()
 {
-    if(sabertooth_motor_driver)
+    if(sabertooth_motor_driver_)
     {
-        delete sabertooth_motor_driver;
-        sabertooth_motor_driver = nullptr;
+        delete sabertooth_motor_driver_;
+        sabertooth_motor_driver_ = nullptr;
     }
 }
 /**

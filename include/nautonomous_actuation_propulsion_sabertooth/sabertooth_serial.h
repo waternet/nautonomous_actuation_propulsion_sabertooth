@@ -11,18 +11,18 @@
 class SabertoothSerial
 {
     private:
-        serial::Serial* propulsion_serial;
+        serial::Serial* propulsion_serial_;
 
-        std::string serial_port;
-        bool serial_available;
-        int serial_baud; 
-        int serial_timeout;
+        std::string serial_port_;
+        bool serial_available_;
+        int serial_baud_; 
+        int serial_timeout_;
 
         bool initSerial();
         bool initialize();
         
     public:
-        SabertoothSerial();
+        SabertoothSerial(ros::NodeHandle private_node_handle);
         ~SabertoothSerial();
 
         bool isOpen();
