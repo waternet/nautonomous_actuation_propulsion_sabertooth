@@ -51,7 +51,6 @@ void SabertoothPropulsion::checkWatchdog()
     }
 }
 
-
 /**
  *\brief Send propulsion twist msg.
  *\params const geometry_msgs::Twist propulsion
@@ -96,51 +95,3 @@ void SabertoothPropulsion::callbackPropulsionRight(const std_msgs::Float32::Cons
 		sabertooth_serial_->writePacket(&right_packet[0]);
 	}
 }
-
-// /**
-//  * Receive topic for independent inputs propulsion and create a new message based on the received topic message.
-//  */
-// void callback_propulsion_left_motor(const nautonomous_actuation_msgs::DifferentialMotor::ConstPtr& differential) {
-
-// 	uint8_t left_motor_command[4], right_motor_command[4];	
-// 	sabertooth_propulsion_driver_->processDifferntial(differential, &left_motor_command[0], &right_motor_command[0]);
-
-//   	if(sabertooth_serial_.isOpen())
-// 	{
-//     	//Send to the first motor driver
-//     	int bytes = actuation_serial->write(&left_motor_command[0], 4);
-
-//     	ros::Duration(0.01).sleep();
-//     	//Send to the second motor driver
-//     	bytes += actuation_serial->write(&right_motor_command[0], 4);
-//   	}
-// }
-
-// /**
-//  *\brief Send propulsion twist msg.
-//  *\params const geometry_msgs::Twist propulsion
-//  *\return
-//  */
-// void actuation_independent_propulsion_twist(const geometry_msgs::Twist::ConstPtr& propulsion) {
-
-// 	uint8_t leftCommand[4], rightCommand[4];
-
-// 	sabertooth_individual_propulsion_linear_model(&leftCommand[0], &rightCommand[0], propulsion);
-
-// 	if(serial_available){
-// 		if(actuation_serial){
-// 			//Check status watchdog
-// 			if(status_msg.level == 0){
-// 				//ROS_INFO("Actuation running");
-				
-// 				int bytes = actuation_serial->write(&leftCommand[0], 4);
-// 				ros::Duration(0.01).sleep();
-// 				bytes += actuation_serial->write(&rightCommand[0], 4);
-
-// 			} else {
-// 				//ROS_INFO("Actuation not running");
-// 			}
-			
-// 		}
-// 	}
-// }
