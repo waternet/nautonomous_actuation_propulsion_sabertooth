@@ -3,7 +3,6 @@
 	<arg name="log" default="false"/>
 	
 	<arg name="propulsion_address" default="128"/>
-	<arg name="conveyor_address" default="132"/>
 
 	<arg name="test_sabertooth" default="false"/>
 	<arg name="test_motors" default="true"/>
@@ -12,11 +11,9 @@
 	<arg name="serial_port" default="/dev/nautonomous/actuation"/>
 	<arg name="serial_available" default="false"/>
 
-	<node name="command_actuation_node" pkg="nautonomous_propulsion_sabertooth" type="command_actuation_node" output="screen">
+	<node name="nautonomous_actuation_propulsion_sabertooth" pkg="nautonomous_actuation_propulsion_sabertooth" type="sabertooth_propulsion_node" output="screen">
 		<!-- Inputs -->
-		<remap from="propulsion" to="/actuation/propulsion/autonomous" />
-		<remap from="conveyor" to="/actuation/conveyor/autonomous" />
-		<remap from="lighting" to="/actuation/lighting/autonomous" />
+		<remap from="propulsion" to="/actuation/propulsion/sabertooth" />
 
 		<!-- Parameters -->
 		<param name="test_sabertooth" type="bool" value="$(arg test_sabertooth)"/>
@@ -25,7 +22,6 @@
 		<param name="serial_available" type="bool" value="$(arg serial_available)"/>
 		
 		<param name="propulsion_address" type="int" value="$(arg propulsion_address)"/>
-		<param name="conveyor_address" type="int" value="$(arg conveyor_address)"/>
 		<!-- Outputs -->
 		<param name="serial_port" value="$(arg serial_port)"/>
 	</node>

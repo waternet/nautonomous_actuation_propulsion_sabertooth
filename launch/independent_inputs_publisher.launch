@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-
-  <node name="independent_inputs_publisher" pkg="nautonomous_propulsion_sabertooth" type="independent_inputs_publisher" output="screen"/>
-
-</launch>
