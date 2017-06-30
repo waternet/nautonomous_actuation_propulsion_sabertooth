@@ -6,7 +6,7 @@ SabertoothSerial::SabertoothSerial(ros::NodeHandle private_node_handle)
     private_node_handle.param("serial_port", serial_port_, std::string("/dev/nautonomous/actuation"));
     private_node_handle.param("serial_baud", serial_baud_, 115200);
     private_node_handle.param("serial_timeout", serial_timeout_, 250);
-    private_node_handle.param("serial_available", serial_available_, true);
+    private_node_handle.param("actuation_serial_available_param", serial_available_, true);
 
     initialize();
 }
@@ -72,7 +72,7 @@ bool SabertoothSerial::initialize()
     } 
     else
     {
-        ROS_WARN("Serial not used");
+        ROS_WARN("Serial not used"); // TODO use visualization when serial is not available.
     }
 
 	return 0;

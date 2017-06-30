@@ -8,9 +8,17 @@ SabertoothPropulsion::SabertoothPropulsion(ros::NodeHandle node_handle, ros::Nod
 
 	sabertooth_serial_ = new SabertoothSerial(private_node_handle);
 
-	left_propulsion_subscriber_ = node_handle.subscribe("/actuation/propulsion/left", 10, &SabertoothPropulsion::callbackPropulsionLeft, this);
-	right_propulsion_subscriber_ = node_handle.subscribe("/actuation/propulsion/right", 10, &SabertoothPropulsion::callbackPropulsionRight, this);
-	twist_propulsion_subscriber_ = node_handle.subscribe("/actuation/propulsion/twist", 10, &SabertoothPropulsion::callbackPropulsionTwist, this);
+	private_node_handle.param("propulsion_differential_mode", differential_mode_, false);
+
+	if (differential_mode_)
+	{
+		left_propulsion_subscriber_ = node_handle.subscribe("left_motor_topic", 10, &SabertoothPropulsion::callbackPropulsionLeft, this);
+		right_propulsion_subscriber_ = node_handle.subscribe("right_motor_topic", 10, &SabertoothPropulsion::callbackPropulsionRight, this);
+	}
+	else
+	{
+		twist_propulsion_subscriber_ = node_handle.subscribe("cmd_vel_topic", 10, &SabertoothPropulsion::callbackPropulsionTwist, this);
+	}
 }
 
 SabertoothPropulsion::~SabertoothPropulsion()

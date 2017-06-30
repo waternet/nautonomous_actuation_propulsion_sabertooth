@@ -48,8 +48,8 @@ add_library(serial
   src/serial.cpp
 )
 
-add_library(visualization
-  src/visualization.cpp
+add_library(sabertooth_visualization
+  src/sabertooth_visualization.cpp
 )
 
 add_executable(sabertooth_propulsion_node src/sabertooth_propulsion_node.cpp)

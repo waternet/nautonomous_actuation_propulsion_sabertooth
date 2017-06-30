@@ -23,6 +23,8 @@ class SabertoothPropulsion{
         ros::Subscriber right_propulsion_subscriber_;
         ros::Subscriber twist_propulsion_subscriber_;
 
+        bool differential_mode_;
+
         void callbackPropulsionTwist(const geometry_msgs::Twist::ConstPtr& twist_message);
 
         void callbackPropulsionLeft(const std_msgs::Float32::ConstPtr& left_message);

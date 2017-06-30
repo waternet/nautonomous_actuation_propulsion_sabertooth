@@ -6,7 +6,7 @@ ActuationWatchdog::ActuationWatchdog(ros::NodeHandle node_handle){
     status_msg_.message = "Unknown";
 
     //Publisher
-    watchdog_publisher_ = node_handle.advertise<diagnostic_msgs::DiagnosticStatus>("/actuation/propulsion/watchdog", 1000);
+    watchdog_publisher_ = node_handle.advertise<diagnostic_msgs::DiagnosticStatus>("actuation_watchdog_topic", 1000);
 
 }
 
