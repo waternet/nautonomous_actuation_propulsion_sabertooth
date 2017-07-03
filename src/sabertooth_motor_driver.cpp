@@ -3,6 +3,7 @@
 SabertoothMotorDriver::SabertoothMotorDriver(uint8_t motor_address)
 {
 	address_ = motor_address;
+
 }
 
 /**

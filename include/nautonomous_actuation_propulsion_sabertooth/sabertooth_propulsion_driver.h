@@ -16,7 +16,6 @@
 class SabertoothPropulsionDriver
 {
     private: 
-        SabertoothMotorDriver* sabertooth_motor_driver_ = nullptr;
 
         enum SabertoothCommand
         {
@@ -52,6 +51,8 @@ class SabertoothPropulsionDriver
         void fillRegularModePacket(double value, double max_value, double min_value, int positive_command, int negative_command, uint8_t* packet);
 
     public:
+	 SabertoothMotorDriver* sabertooth_motor_driver_ = nullptr;
+
         SabertoothPropulsionDriver(ros::NodeHandle private_node_handle);
         ~SabertoothPropulsionDriver();
 

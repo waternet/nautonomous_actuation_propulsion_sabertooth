@@ -13,7 +13,6 @@ ActuationWatchdog::ActuationWatchdog(ros::NodeHandle node_handle){
 bool ActuationWatchdog::checkStatus(std::string response)
 {
     diagnostic_msgs::DiagnosticStatus temp_status_msg = createStatus(response);
-
     if(adjustStatus(temp_status_msg))
     {
         watchdog_publisher_.publish(status_msg_); 

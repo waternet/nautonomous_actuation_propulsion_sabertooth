@@ -86,12 +86,16 @@ bool SabertoothSerial::isOpen()
 	return false;
 }
 
-void SabertoothSerial::readStatus(std::string response)
+std::string SabertoothSerial::readStatus()
 {
+    std::string response;
+
     if(isOpen())
     {
         propulsion_serial_->read(response, 1); //status mesage only has 1 byte
     }
+
+    return response;
 }
 
 void SabertoothSerial::writePacket(uint8_t* packet)

@@ -23,7 +23,7 @@ int SabertoothPropulsionDriver::sabertoothScale(double variable, double limit)
 { 
     if(variable > 0.0)
     {
-        return (int)(max_command_value_ * (std::max(variable, limit) / limit));
+        return (int)(max_command_value_ * (std::min(variable, limit) / limit));
     } 
     else if(variable < 0.0)
     {
@@ -113,10 +113,12 @@ void SabertoothPropulsionDriver::processTwist(const geometry_msgs::Twist::ConstP
 
 void SabertoothPropulsionDriver::processLeft(const std_msgs::Float32::ConstPtr& left_message, uint8_t* left_packet)
 {
+    ROS_INFO("LEFT %f ", left_message->data); 
     fillRegularModePacket(left_message->data, maximum_motor_value_, minimum_motor_value_, SabertoothCommand::Motor1Forward, SabertoothCommand::Motor1Backward, left_packet);
 }
 
 void SabertoothPropulsionDriver::processRight(const std_msgs::Float32::ConstPtr& right_message, uint8_t* right_packet)
-{
+{	
+    ROS_INFO("RIGHT %f ", right_message->data);
     fillRegularModePacket(right_message->data, maximum_motor_value_, minimum_motor_value_, SabertoothCommand::Motor2Forward, SabertoothCommand::Motor2Backward, right_packet);
 }

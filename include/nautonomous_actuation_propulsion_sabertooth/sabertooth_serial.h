@@ -27,7 +27,7 @@ class SabertoothSerial
 
         bool isOpen();
 
-        void readStatus(std::string response);
+        std::string readStatus();
         void writePacket(uint8_t* packet);
 
         void flushInput();
