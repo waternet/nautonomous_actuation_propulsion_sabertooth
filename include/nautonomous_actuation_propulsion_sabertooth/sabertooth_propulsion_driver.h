@@ -38,7 +38,7 @@ class SabertoothPropulsionDriver
         float maximum_x_value_ = 1.0;
 
         float minimum_theta_value_ = 0.01;
-        float maximum_theta_value_ = 1.57; //TODO is this the correct value?
+        float maximum_theta_value_ = 0.50; //TODO is this the correct value?
 
         float minimum_motor_value_ = 0.01;
         float maximum_motor_value_ = 1.0;
