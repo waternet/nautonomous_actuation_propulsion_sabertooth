@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package>
 
-  <name>nautonomous_propulsion_sabertooth</name>
+  <name>nautonomous_actuation_propulsion_sabertooth</name>
   <version>0.0.1</version>
-  <description>The nautonomous_propulsion_sabertooth package</description>
+  <description>The nautonomous_actuation_propulsion_sabertooth package</description>
 
   <maintainer email="daan.zeeuwe01@waternet.nl">Daan Zeeuwe</maintainer>
 

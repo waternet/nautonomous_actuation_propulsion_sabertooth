@@ -1,0 +1,41 @@
+<launch>
+	<arg name="rosbag_enabled" default="false"/>
+	<arg name="rosbag_prefix_url" default="/tmp"/>
+	
+	<arg name="propulsion_address" default="128"/>
+	<arg name="propulsion_differential_mode_param" default="false"/>
+
+	<arg name="serial_port" default="/dev/nautonomous/actuation"/>
+	<arg name="actuation_serial_available_param" default="true"/>
+
+	<arg name="left_motor_topic" default="left_motor_topic"/>
+	<arg name="right_motor_topic" default="right_motor_topic"/>
+
+	<arg name="cmd_vel_topic" default="cmd_vel_topic"/>
+
+	<arg name="actuation_watchdog_topic" default="actuation_watchdog_topic"/>
+
+
+	<node name="nautonomous_actuation_propulsion_sabertooth" pkg="nautonomous_actuation_propulsion_sabertooth" type="sabertooth_propulsion_node" output="screen">
+		<!-- Parameters -->
+		<param name="actuation_serial_available_param" type="bool" value="$(arg actuation_serial_available_param)"/>
+		<param name="serial_port" value="$(arg serial_port)"/>
+
+		<param name="propulsion_address" type="int" value="$(arg propulsion_address)"/>
+		<param name="propulsion_differential_mode_param" type="bool" value="$(arg propulsion_differential_mode_param)"/>
+
+		<!--Subscribers-->
+		<remap from="left_motor_topic" to="$(arg left_motor_topic)"/>
+		<remap from="right_motor_topic" to="$(arg right_motor_topic)"/>
+
+		<remap from="cmd_vel_topic" to="$(arg cmd_vel_topic)"/>
+
+		<!--Publisher-->
+		<remap from="actuation_watchdog_topic" to="$(arg actuation_watchdog_topic)"/>
+
+	</node>
+
+	<node pkg="rosbag" type="record" name="rosbag_actuation_propulsion_sabertooth" args="record -o $(arg rosbag_prefix_url)/actuation/propulsion/sabertooth $(arg left_motor_topic) $(arg right_motor_topic) $(arg cmd_vel_topic) $(arg actuation_watchdog_topic)" output="screen" if="$(arg rosbag_enabled)"/>
+
+
+</launch>
