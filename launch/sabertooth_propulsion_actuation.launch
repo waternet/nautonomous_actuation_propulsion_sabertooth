@@ -8,17 +8,18 @@
 
 	<arg name="debug" default="false"/>
 
-	<arg name="left_feedback_topic" default="left"/>
-	<arg name="right_feedback_topic" default="right"/>
+	<arg name="left_feedback_topic" default="feedback/left"/>
+	<arg name="right_feedback_topic" default="feedback/right"/>
 
-	<arg name="left_motor_topic" default="left"/>
-	<arg name="right_motor_topic" default="right"/>
+	<arg name="left_motor_topic" default="motor/left"/>
+	<arg name="right_motor_topic" default="motor/right"/>
 
 	<arg name="sabertooth_config" default="$(find nautonomous_actuation_propulsion_sabertooth)/config/sabertooth.yaml"/>
 
 	<arg name="cmd_vel_topic" default="cmd_vel"/>
 
 	<node name="nautonomous_actuation_propulsion_sabertooth" pkg="nautonomous_actuation_propulsion_sabertooth" type="sabertooth_propulsion_node" output="screen">
+		
 		<!-- Configs -->
 		<rosparam file="$(arg sabertooth_config)" command="load"/>
 		
@@ -31,8 +32,8 @@
 
 		<param name="debug" type="bool" value="$(arg debug)"/>
 
-		<remap from="left_topic" to="$(arg left_feedback_topic)"/>
-		<remap from="right_topic" to="$(arg right_feedback_topic)"/>
+		<remap from="left_feedback_topic" to="$(arg left_feedback_topic)"/>
+		<remap from="right_feedback_topic" to="$(arg right_feedback_topic)"/>
 
 		<!--Subscribers-->
 		<remap from="left_motor_topic" to="$(arg left_motor_topic)"/>

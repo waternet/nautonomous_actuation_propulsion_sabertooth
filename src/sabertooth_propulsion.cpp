@@ -50,14 +50,14 @@ SabertoothPropulsion::SabertoothPropulsion(ros::NodeHandle node_handle, ros::Nod
 	queuePacket();
 
 	//Get publishers
-	left_feedback_publisher_ = node_handle.advertise<std_msgs::Int16>("feedback/left_feedback_topic", 1, true);
-	right_feedback_publisher_ = node_handle.advertise<std_msgs::Int16>("feedback/right_feedback_topic", 1, true);
+	left_feedback_publisher_ = node_handle.advertise<std_msgs::Int16>("left_feedback_topic", 1, true);
+	right_feedback_publisher_ = node_handle.advertise<std_msgs::Int16>("right_feedback_topic", 1, true);
 
 	//Get subscribers
 	if (differential_mode_)
 	{
-		left_propulsion_subscriber_ = node_handle.subscribe("motor/left_motor_topic", 10, &SabertoothPropulsion::callbackPropulsionLeft, this);
-		right_propulsion_subscriber_ = node_handle.subscribe("motor/right_motor_topic", 10, &SabertoothPropulsion::callbackPropulsionRight, this);
+		left_propulsion_subscriber_ = node_handle.subscribe("left_motor_topic", 10, &SabertoothPropulsion::callbackPropulsionLeft, this);
+		right_propulsion_subscriber_ = node_handle.subscribe("right_motor_topic", 10, &SabertoothPropulsion::callbackPropulsionRight, this);
 	}
 	else
 	{
