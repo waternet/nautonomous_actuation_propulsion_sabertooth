@@ -1,3 +1,11 @@
+/**
+    Sabertooth Serial
+    sabertooth_serial.cpp
+    Purpose: High level serial module for the sabertooth motor.
+
+    @author Daan Zeeuwe
+    @version 1.0 8/7/17 
+*/
 
 #include <nautonomous_actuation_propulsion_sabertooth/sabertooth_serial.h>
 
@@ -98,11 +106,11 @@ std::string SabertoothSerial::readStatus()
     return response;
 }
 
-void SabertoothSerial::writePacket(uint8_t* packet)
+void SabertoothSerial::writePacket(SabertoothPacket packet)
 {
     if(isOpen())
     {
-        propulsion_serial_->write(&packet[0], 4); // Packet has 4 arguments.
+        propulsion_serial_->write(&packet.getPacket()[0], packet.size()); // Packet has 4 arguments.
     }
 }
 

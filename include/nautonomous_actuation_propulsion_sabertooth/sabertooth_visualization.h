@@ -1,3 +1,12 @@
+/**
+    Sabertooth Visualization
+    sabertooth_visualization.h
+    Purpose: Visualization module to visualize the direction of propulsion motors
+
+    @author Daan Zeeuwe
+    @version 1.0 8/7/17 
+*/
+
 #ifndef VISUALIZATION_HPP_
 #define VISUALIZATION_HPP_
 

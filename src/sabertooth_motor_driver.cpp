@@ -1,40 +1,56 @@
+/**
+    Sabertooth Motor Driver
+    sabertooth_motor_driver.cpp
+    Purpose: Transform ROS messages to Sabertooth packets content.
+
+    @author Daan Zeeuwe
+    @version 1.0 8/7/17 
+*/
+
 #include <nautonomous_actuation_propulsion_sabertooth/sabertooth_motor_driver.h>
 
-SabertoothMotorDriver::SabertoothMotorDriver(uint8_t motor_address)
+SabertoothMotorDriver::SabertoothMotorDriver()
 {
-	address_ = motor_address;
 
+}
+
+int SabertoothMotorDriver::sabertoothScale(double variable, double max_value, double min_value)
+{   
+    int motor_value = 0;
+
+    if(variable > min_value)
+    {
+        motor_value = max_command_value_ * (std::min(variable, max_value) / max_value);
+    } 
+    else if(variable < -min_value)
+    {
+        motor_value = max_command_value_ * (std::max(variable, -max_value) / -max_value); 
+    } 
+    
+    return motor_value;
+}
+
+void SabertoothMotorDriver::processMotorValue(SabertoothPacket* packet, double motor_value, double max_value, double min_value, int positive_command, int negative_command)
+{
+    uint8_t command = 0;
+    uint8_t value = 0;
+
+    // Check if the value is positive and accordingly choose the correct command.
+    command = (motor_value >= 0.0) ? (positive_command) : (negative_command);
+
+    // Check if the value is larger than the min_value in the positive case and smaller in the negative case.
+    value = sabertoothScale(motor_value, max_value, min_value);
+
+    packet->fillPacket(command, value);
 }
 
 /**
- *\brief Create test message for sabertooth
- *\param uint8_t address
- *\param uint8_t command
- *\param uint8_t value
- *\param uint8_t* sabertoothCommand
- *\return
- */
-void SabertoothMotorDriver::fillPacket(uint8_t command, uint8_t value, uint8_t* packet)
-{
-	packet[0] = address_;
-	packet[1] = command;
-	packet[2] = value;
-
-	setChecksum(packet);
-}
-
-void SabertoothMotorDriver::setChecksum(uint8_t* packet)
-{
-    packet[3] = (packet[0] + packet[1] + packet[2]) & 0b01111111; // 0b01111111 checksum constant to prevent overflow to the 8th bit.
-}
-
-/**
-* Create two message for the timeout for the propulsion motor drivers.
+* Create two message for the timeout for the Motor motor drivers.
 * timeout in milliseconds (ms)
+* @param uint16_t timeout_ms - 100 ms per value increase starting at 0, so 1000 ms timeout has a command of 10.
+* @param uint8_t* packet
 */
-void SabertoothMotorDriver::setSerialTimeout(uint16_t timeout, uint8_t* packet)
+void SabertoothMotorDriver::setSerialTimeout(SabertoothPacket* packet, uint16_t timeout_ms)
 {
-    // 14 is the command for serial timeout
-	// 100 ms per value increase starting at 0, so 1000 ms timeout has a command of 10.
-	fillPacket(14, (int) timeout / 100, packet);
+	packet->fillPacket(SabertoothPacket::SabertoothCommand::SerialTimeout, (int) timeout_ms / 100);
 }

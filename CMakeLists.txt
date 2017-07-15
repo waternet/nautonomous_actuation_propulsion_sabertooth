@@ -28,12 +28,12 @@ add_library(actuation_watchdog
   src/actuation_watchdog.cpp
 )
 
-add_library(sabertooth_motor_driver
-  src/sabertooth_motor_driver.cpp
+add_library(sabertooth_packet
+  src/sabertooth_packet.cpp
 )
 
-add_library(sabertooth_propulsion_driver
-  src/sabertooth_propulsion_driver.cpp
+add_library(sabertooth_motor_driver
+  src/sabertooth_motor_driver.cpp
 )
 
 add_library(sabertooth_propulsion
@@ -54,9 +54,9 @@ add_library(sabertooth_visualization
 
 add_executable(sabertooth_propulsion_node src/sabertooth_propulsion_node.cpp)
 
-target_link_libraries(sabertooth_serial ${catkin_LIBRARIES} serial serial_unix)
-target_link_libraries(sabertooth_propulsion_driver ${catkin_LIBRARIES} sabertooth_motor_driver)
-target_link_libraries(sabertooth_propulsion ${catkin_LIBRARIES} actuation_watchdog sabertooth_propulsion_driver sabertooth_serial)
+target_link_libraries(sabertooth_serial ${catkin_LIBRARIES} serial serial_unix sabertooth_packet)
+target_link_libraries(sabertooth_motor_driver ${catkin_LIBRARIES} sabertooth_packet)
+target_link_libraries(sabertooth_propulsion ${catkin_LIBRARIES} actuation_watchdog sabertooth_motor_driver sabertooth_serial sabertooth_packet)
 target_link_libraries(sabertooth_propulsion_node ${catkin_LIBRARIES} sabertooth_propulsion)
 
 # if(CATKIN_ENABLE_TESTING)
