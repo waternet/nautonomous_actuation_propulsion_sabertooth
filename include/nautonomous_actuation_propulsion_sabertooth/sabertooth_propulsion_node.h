@@ -1,9 +1,11 @@
-/*
- * command_actuation_node.hpp
- *
- *  Created on: Apr 16, 2016
- *      Author: zeeuwe01
- */
+/**
+    Sabertooth Propulsion Node
+    sabertooth_propulsion_node.h
+    Purpose: ROS Node to startup the Sabertooth Propulsion module
+
+    @author Daan Zeeuwe
+    @version 1.0 8/7/17 
+*/
 
 #ifndef SABERTOOTHPROPULSIONNODE_H_
 #define SABERTOOTHPROPULSIONNODE_H_

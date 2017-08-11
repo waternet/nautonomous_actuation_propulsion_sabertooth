@@ -1,3 +1,11 @@
+/**
+    Sabertooth Serial
+    sabertooth_serial.h
+    Purpose: High level serial module for the sabertooth motor.
+
+    @author Daan Zeeuwe
+    @version 1.0 8/7/17 
+*/
 
 #ifndef SABERTOOTHSERIAL_H_
 #define SABERTOOTHSERIAL_H_
@@ -7,6 +15,7 @@
 #include <ros/ros.h>
 
 #include "serial.h"
+#include "sabertooth_packet.h"
 
 class SabertoothSerial
 {
@@ -28,7 +37,7 @@ class SabertoothSerial
         bool isOpen();
 
         std::string readStatus();
-        void writePacket(uint8_t* packet);
+        void writePacket(SabertoothPacket packet);
 
         void flushInput();
 
