@@ -17,6 +17,15 @@
 	<arg name="left_motor_topic" default="motor/left"/>
 	<arg name="right_motor_topic" default="motor/right"/>
 
+	<arg name="minimum_forward_value" default="0.01"/>
+    <arg name="maximum_forward_value" default="2.0"/>
+
+    <arg name="minimum_turning_value" default="0.01"/>
+    <arg name="maximum_turning_value" default="0.5"/>
+
+    <arg name="minimum_motor_value" default="0.01"/>
+    <arg name="maximum_motor_value" default="1.0"/>
+
 	<arg name="sabertooth_config" default="$(find nautonomous_actuation_propulsion_sabertooth)/config/sabertooth.yaml"/>
 
 	<arg name="cmd_vel_topic" default="cmd_vel"/>
@@ -27,6 +36,15 @@
 		<rosparam file="$(arg sabertooth_config)" command="load"/>
 		
 		<!-- Parameters -->
+		<param name="minimum_forward_value" value="0.01"/>
+		<param name="maximum_forward_value" value="2.0"/>
+
+		<param name="minimum_turning_value" value="0.01"/>
+		<param name="maximum_turning_value" value="0.5"/>
+
+		<param name="minimum_motor_value" value="0.01"/>
+		<param name="maximum_motor_value" value="1.0"/>
+
 		<param name="actuation_serial_available_param" type="bool" value="$(arg actuation_serial_available_param)"/>
 		<param name="serial_port" value="$(arg serial_port)"/>
 

@@ -24,17 +24,22 @@ SabertoothPropulsion::SabertoothPropulsion(ros::NodeHandle node_handle, ros::Nod
 	private_node_handle.param("debug", debug_, false);
 
 	private_node_handle.param("minimum_forward_value", minimum_forward_value_, 0.01);
-    private_node_handle.param("maximum_forward_value", maximum_forward_value_, 1.0);
+	private_node_handle.param("maximum_forward_value", maximum_forward_value_, 2.0);
 
-    private_node_handle.param("minimum_turning_value", minimum_turning_value_, 0.01);
-    private_node_handle.param("maximum_turning_value", maximum_turning_value_, 0.5);
+	private_node_handle.param("minimum_turning_value", minimum_turning_value_, 0.01);
+	private_node_handle.param("maximum_turning_value", maximum_turning_value_, 0.5);
 
-    private_node_handle.param("minimum_motor_value", minimum_motor_value_, 0.01);
-    private_node_handle.param("maximum_motor_value", maximum_motor_value_, 1.0);
-	
-    // Motor address
-    int motor_address = 128; // param does not allow uint8_t
-    private_node_handle.param("propulsion_address", motor_address, 128); //128 default propulsion address
+	private_node_handle.param("minimum_motor_value", minimum_motor_value_, 0.01);
+	private_node_handle.param("maximum_motor_value", maximum_motor_value_, 1.0);
+
+	ROS_INFO("Min-max: forward %.2f-%.2f, turning %.2f-%.2f, motor %.2f-%.2f", 
+		minimum_forward_value_, maximum_forward_value_, 
+		minimum_turning_value_, maximum_turning_value_, 
+		minimum_motor_value_, maximum_motor_value_);
+
+	// Motor address
+	int motor_address = 128; // param does not allow uint8_t
+	private_node_handle.param("propulsion_address", motor_address, 128); //128 default propulsion address
 
 	//Create a sabertooth packet
 	sabertooth_packet_.setAddress((uint8_t) motor_address);
