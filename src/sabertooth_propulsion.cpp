@@ -23,7 +23,6 @@ SabertoothPropulsion::SabertoothPropulsion(ros::NodeHandle node_handle, ros::Nod
 
 	private_node_handle.param("debug", debug_, false);
 
-	
 	private_node_handle.param("minimum_forward_value", minimum_forward_value_, 0.01);
     private_node_handle.param("maximum_forward_value", maximum_forward_value_, 1.0);
 

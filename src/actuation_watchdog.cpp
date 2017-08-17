@@ -63,7 +63,7 @@ bool ActuationWatchdog::adjustStatus(diagnostic_msgs::DiagnosticStatus temp_stat
     return false;
 }
 
-// Check if the current tatus message has a valid status from the actuation platform
+// Check if the current status message has a valid status from the actuation platform
 bool ActuationWatchdog::isActive()
 {
     return (status_msg_.level == 0);
