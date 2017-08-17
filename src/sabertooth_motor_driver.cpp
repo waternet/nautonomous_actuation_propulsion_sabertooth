@@ -23,7 +23,7 @@ int SabertoothMotorDriver::sabertoothScale(double value, double max_value, doubl
     {
         motor_value = max_command_value_ * (std::min(value, max_value) / max_value);
     } 
-    else if(variable < -min_value)
+    else if(value < -min_value)
     {
         motor_value = max_command_value_ * (std::max(value, -max_value) / -max_value); 
     } 
@@ -54,5 +54,37 @@ void SabertoothMotorDriver::processMotorValue(SabertoothPacket* packet, double m
 */
 void SabertoothMotorDriver::setSerialTimeout(SabertoothPacket* packet, uint16_t timeout_ms)
 {
-	packet->fillPacket(SabertoothPacket::SabertoothCommand::SerialTimeout, (int) timeout_ms / 100);
+    int command_value = timeout_ms / 100;
+	packet->fillPacket(SabertoothPacket::SabertoothCommand::SerialTimeout, command_value);
+}
+
+
+void SabertoothMotorDriver::setRamp(SabertoothPacket* packet, uint16_t ramp_time_ms)
+{
+    uint8_t command_value = 0;
+
+    double ramp_time_s = ramp_time_ms / 1000.0;
+    //Fast ramp
+    if (ramp_time_ms >= min_fast_ramp && ramp_time_ms <= max_fast_ramp)
+    {
+        ROS_INFO("Fast ramp");
+        command_value = (uint8_t) 256.0 / ramp_time_ms;
+    } 
+    //Intermediate ramp
+    else if (ramp_time_ms > max_fast_ramp && ramp_time_ms <= max_slow_ramp)
+    {
+        ROS_INFO("Intermediate/Slow ramp");
+        command_value = (uint8_t) 256.0 / (15.25 * ramp_time_s) + 10.0;
+    }
+    else
+    {
+        ROS_INFO("Not available ramp ms ");
+    }
+
+    if (command_value != 0)
+    {
+        ROS_INFO("Ramp time %i Ramp command value: %i", ramp_time_ms, command_value);
+        packet->fillPacket(SabertoothPacket::SabertoothCommand::Ramping, command_value);
+    }
+    
 }

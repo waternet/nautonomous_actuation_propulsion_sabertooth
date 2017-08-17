@@ -6,6 +6,9 @@
 	<arg name="serial_port" default="/dev/nautonomous/actuation"/>
 	<arg name="actuation_serial_available_param" default="true"/>
 
+	<arg name="serial_timeout_ms" default="1000"/>
+	<arg name="ramp_time_ms" default="1000"/>
+
 	<arg name="debug" default="false"/>
 
 	<arg name="left_feedback_topic" default="feedback/left"/>
@@ -26,6 +29,9 @@
 		<!-- Parameters -->
 		<param name="actuation_serial_available_param" type="bool" value="$(arg actuation_serial_available_param)"/>
 		<param name="serial_port" value="$(arg serial_port)"/>
+
+		<param name="serial_timeout_ms" value="$(arg serial_timeout_ms)"/>
+		<param name="ramp_time_ms" value="$(arg ramp_time_ms)"/>
 
 		<param name="propulsion_address" type="int" value="$(arg propulsion_address)"/>
 		<param name="propulsion_differential_mode_param" type="bool" value="$(arg propulsion_differential_mode_param)"/>

@@ -29,7 +29,12 @@ class SabertoothMotorDriver
 
         const uint8_t max_command_value_ = 127;
 
-        int sabertoothScale(double variable, double max_value, double min_value);
+        const uint8_t min_fast_ramp = 26;
+        const uint16_t max_fast_ramp = 256;
+
+        const uint16_t max_slow_ramp = 16787;
+
+        int sabertoothScale(double value, double max_value, double min_value);
 
     public:
 
@@ -38,6 +43,8 @@ class SabertoothMotorDriver
         void processMotorValue(SabertoothPacket* packet, double value, double max_value, double min_value, int positive_command, int negative_command);
     
         void setSerialTimeout(SabertoothPacket* packet, uint16_t timeout_ms);
+        
+        void setRamp(SabertoothPacket* packet, uint16_t ramp_time_ms);
 };
 
 #endif // SABERTOOTHMOTORDRIVER_HPP_

@@ -48,10 +48,6 @@ add_library(serial
   src/serial.cpp
 )
 
-add_library(sabertooth_visualization
-  src/sabertooth_visualization.cpp
-)
-
 add_executable(sabertooth_propulsion_node src/sabertooth_propulsion_node.cpp)
 
 target_link_libraries(sabertooth_serial ${catkin_LIBRARIES} serial serial_unix sabertooth_packet)

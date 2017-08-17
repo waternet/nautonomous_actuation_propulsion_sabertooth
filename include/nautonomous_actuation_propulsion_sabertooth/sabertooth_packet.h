@@ -47,7 +47,8 @@ class SabertoothPacket
             MixedRight = 10,
             MixedLeft = 11,
 
-            SerialTimeout = 14
+            SerialTimeout = 14,
+            Ramping = 16
         };
 
         SabertoothPacket();

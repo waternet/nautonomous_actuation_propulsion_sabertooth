@@ -57,6 +57,8 @@ class SabertoothPropulsion{
         void callbackPropulsionRight(const std_msgs::Float32::ConstPtr& right_message);
 
         void sendPacket();
+        
+        void prepareMotorDriver(int serial_timeout, int ramp_time_ms);
 
         std_msgs::Int16 createFeedbackMessage();
 

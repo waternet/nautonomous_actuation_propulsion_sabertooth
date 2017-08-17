@@ -44,9 +44,10 @@ SabertoothPropulsion::SabertoothPropulsion(ros::NodeHandle node_handle, ros::Nod
 
 	//Set Timeout of motor
 	int serial_timeout;
+	int ramp_time_ms;
 	private_node_handle.param("serial_timeout_ms", serial_timeout, 1000);
-	sabertooth_motor_driver_->setSerialTimeout(&sabertooth_packet_, serial_timeout);
-	sendPacket();
+	private_node_handle.param("ramp_time_ms", ramp_time_ms, 1000);
+	prepareMotorDriver(serial_timeout, ramp_time_ms);
 
 	//Get publishers
 	left_feedback_publisher_ = node_handle.advertise<std_msgs::Int16>("left_feedback_topic", 1, true);
@@ -87,6 +88,15 @@ SabertoothPropulsion::~SabertoothPropulsion()
 		delete sabertooth_serial_;
 		sabertooth_serial_ = nullptr;
 	}
+}
+
+void SabertoothPropulsion::prepareMotorDriver(int serial_timeout, int ramp_time_ms)
+{
+	sabertooth_motor_driver_->setSerialTimeout(&sabertooth_packet_, serial_timeout);
+	sendPacket();
+
+	sabertooth_motor_driver_->setRamp(&sabertooth_packet_, ramp_time_ms);
+	sendPacket();
 }
 
 /**
