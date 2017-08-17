@@ -14,17 +14,18 @@ SabertoothMotorDriver::SabertoothMotorDriver()
 
 }
 
-int SabertoothMotorDriver::sabertoothScale(double variable, double max_value, double min_value)
+// Scale the value within the boundaries (0, max_command_value_).
+int SabertoothMotorDriver::sabertoothScale(double value, double max_value, double min_value)
 {   
     int motor_value = 0;
 
-    if(variable > min_value)
+    if(value > min_value)
     {
-        motor_value = max_command_value_ * (std::min(variable, max_value) / max_value);
+        motor_value = max_command_value_ * (std::min(value, max_value) / max_value);
     } 
     else if(variable < -min_value)
     {
-        motor_value = max_command_value_ * (std::max(variable, -max_value) / -max_value); 
+        motor_value = max_command_value_ * (std::max(value, -max_value) / -max_value); 
     } 
     
     return motor_value;
