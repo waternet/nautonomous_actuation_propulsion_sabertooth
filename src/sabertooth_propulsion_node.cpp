@@ -1,3 +1,13 @@
+/**
+    Sabertooth Propulsion Node
+    sabertooth_propulsion_node.cpp
+    Purpose: ROS Node to startup the Sabertooth Propulsion module
+
+    @author Daan Zeeuwe
+    @version 1.0 8/7/17 
+*/
+
+
 #include <nautonomous_actuation_propulsion_sabertooth/sabertooth_propulsion_node.h>
 
 /**

@@ -1,9 +1,11 @@
-/*
- * Serial.cpp
- *
- *  Created on: Apr 16, 2016
- *      Author: zeeuwe01
- */
+/**
+    Serial
+    serial.cpp
+    Purpose: Low level serial driver
+
+    @author Daan Zeeuwe
+    @version 1.0 8/7/17 
+*/
 
 /* Copyright 2012 William Woodall and John Harrison */
 #include <algorithm>

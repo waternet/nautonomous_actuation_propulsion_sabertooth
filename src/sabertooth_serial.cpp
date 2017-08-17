@@ -1,3 +1,11 @@
+/**
+    Sabertooth Serial
+    sabertooth_serial.cpp
+    Purpose: High level serial module for the sabertooth motor.
+
+    @author Daan Zeeuwe
+    @version 1.0 8/7/17 
+*/
 
 #include <nautonomous_actuation_propulsion_sabertooth/sabertooth_serial.h>
 
@@ -78,6 +86,9 @@ bool SabertoothSerial::initialize()
 	return 0;
 }
 
+/**
+Check if the propulsion serial attribute exists, if so try to open the serial port.
+ */
 bool SabertoothSerial::isOpen() 
 {
     if(propulsion_serial_){
@@ -86,6 +97,9 @@ bool SabertoothSerial::isOpen()
 	return false;
 }
 
+/**
+ Read the status of actuation platform by reading one byte from it.
+ */
 std::string SabertoothSerial::readStatus()
 {
     std::string response;
@@ -98,14 +112,21 @@ std::string SabertoothSerial::readStatus()
     return response;
 }
 
-void SabertoothSerial::writePacket(uint8_t* packet)
+
+/**
+ If the actuation platform is connected and open, write the packet given to the serial port.
+ */
+void SabertoothSerial::writePacket(SabertoothPacket packet)
 {
     if(isOpen())
     {
-        propulsion_serial_->write(&packet[0], 4); // Packet has 4 arguments.
+        propulsion_serial_->write(&packet.getPacket()[0], packet.size()); // Packet has 4 arguments.
     }
 }
 
+/**
+ If the serial port is open flush the input, so we can read the next input next time.
+ */
 void SabertoothSerial::flushInput()
 {
     if(isOpen())

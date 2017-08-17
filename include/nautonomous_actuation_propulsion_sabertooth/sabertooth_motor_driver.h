@@ -1,21 +1,43 @@
-#ifndef SABERTOOTHMOTORDRIVER_H_
-#define SABERTOOTHMOTORDRIVER_H_
+/**
+    Sabertooth Motor Driver
+    sabertooth_motor_driver.h
+    Purpose: Transform ROS messages to Sabertooth packets content.
 
-#include <stdint.h>
+    @author Daan Zeeuwe
+    @version 1.0 8/7/17 
+*/
+
+
+#ifndef SABERTOOTHMOTORDRIVER_HPP_
+#define SABERTOOTHMOTORDRIVER_HPP_
+
+#include <stdio.h>                  // Need to be able to use standard output "putchar" command
+#include <stdint.h>                 // Include your standard types definition file to accomodate the C99 uint_x types
+#include <algorithm>                // std::max and std::min
+
+#include <ros/ros.h>
+
+#include <std_msgs/Float32.h>
+
+#include <geometry_msgs/Twist.h>
+
+#include "sabertooth_packet.h"
 
 class SabertoothMotorDriver
 {
-    private:
-         void setChecksum(uint8_t* packet);
+    private: 
 
-         uint8_t address_;
+        const uint8_t max_command_value_ = 127;
+
+        int sabertoothScale(double variable, double max_value, double min_value);
 
     public:
-        SabertoothMotorDriver(uint8_t motor_address);
 
-        void fillPacket(uint8_t command, uint8_t value, uint8_t* packet);
-        void setSerialTimeout(uint16_t timeout, uint8_t* packet);
+        SabertoothMotorDriver();
 
+        void processMotorValue(SabertoothPacket* packet, double value, double max_value, double min_value, int positive_command, int negative_command);
+    
+        void setSerialTimeout(SabertoothPacket* packet, uint16_t timeout_ms);
 };
 
-#endif // SABERTOOTHMOTORDRIVER_H_
+#endif // SABERTOOTHMOTORDRIVER_HPP_
