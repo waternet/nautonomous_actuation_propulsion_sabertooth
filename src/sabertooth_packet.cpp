@@ -41,36 +41,57 @@ void SabertoothPacket::setChecksum()
     packet_[checksum_index_] = (packet_[address_index_] + packet_[command_index_] + packet_[value_index_]) & 0b01111111; 
 }
 
+/**
+ Set the address of the packet
+**/
 void SabertoothPacket::setAddress(uint8_t address)
 {
     packet_[address_index_] = address;
 }
 
+/**
+ Get the address of the packet
+**/
 uint8_t SabertoothPacket::getAddress()
 {
     return packet_[address_index_];
 }
 
+/**
+ Set the command value of the packet
+**/
 uint8_t SabertoothPacket::getCommand()
 {
     return packet_[command_index_];
 }
 
+/**
+ Get the command value of the packet
+**/
 uint8_t SabertoothPacket::getValue()
 {
     return packet_[value_index_];
 }
 
+/**
+ Set the checksum of the packet
+**/
 uint8_t SabertoothPacket::getChecksum()
 {
     return packet_[checksum_index_];
 }
 
+/**
+ Get the entire packet.
+**/
 uint8_t* SabertoothPacket::getPacket()
 {
     return packet_;
 }
 
+/**
+ Get the size of the packet.
+**/
 uint8_t SabertoothPacket::size()
 {
     return packet_size_;

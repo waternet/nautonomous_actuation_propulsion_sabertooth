@@ -47,7 +47,7 @@ SabertoothPropulsion::SabertoothPropulsion(ros::NodeHandle node_handle, ros::Nod
 	int serial_timeout;
 	private_node_handle.param("serial_timeout_ms", serial_timeout, 1000);
 	sabertooth_motor_driver_->setSerialTimeout(&sabertooth_packet_, serial_timeout);
-	queuePacket();
+	sendPacket();
 
 	//Get publishers
 	left_feedback_publisher_ = node_handle.advertise<std_msgs::Int16>("left_feedback_topic", 1, true);
@@ -66,6 +66,9 @@ SabertoothPropulsion::SabertoothPropulsion(ros::NodeHandle node_handle, ros::Nod
 
 }
 
+/**
+ Deconstructor, deletes and removes the pointers to other objects
+**/
 SabertoothPropulsion::~SabertoothPropulsion()
 {
 	if(actuation_watchdog_)
@@ -87,6 +90,9 @@ SabertoothPropulsion::~SabertoothPropulsion()
 	}
 }
 
+/**
+ Check the watchdog, which reads out the serial for a watchdog message, and check if this status message is correct.
+ **/
 void SabertoothPropulsion::checkWatchdog()
 {
 	std::string response = sabertooth_serial_->readStatus(); // only one byte
@@ -105,35 +111,44 @@ void SabertoothPropulsion::callbackPropulsionTwist(const geometry_msgs::Twist::C
 	sabertooth_motor_driver_->processMotorValue(&sabertooth_packet_, twist_message->linear.x, maximum_forward_value_, minimum_forward_value_, 
 		SabertoothPacket::SabertoothCommand::MixedForward, SabertoothPacket::SabertoothCommand::MixedBackward);
 
-	queuePacket();
+	sendPacket();
 
 	sabertooth_motor_driver_->processMotorValue(&sabertooth_packet_, twist_message->angular.z, maximum_turning_value_, minimum_turning_value_, 
 		SabertoothPacket::SabertoothCommand::MixedLeft, SabertoothPacket::SabertoothCommand::MixedRight);
 
-	queuePacket();
+	sendPacket();
 }	
 
+/**
+ When a left message arrives then process the message to create a packet, then send the packet to be written to the actuation platform and publish the feedback.
+ **/
 void SabertoothPropulsion::callbackPropulsionLeft(const std_msgs::Float32::ConstPtr& left_message)
 {	
 	sabertooth_motor_driver_->processMotorValue(&sabertooth_packet_, left_message->data, maximum_motor_value_, minimum_motor_value_, 
 		SabertoothPacket::SabertoothCommand::Motor1Forward, SabertoothPacket::SabertoothCommand::Motor1Backward);
 
-	queuePacket();
+	sendPacket();
 
 	left_feedback_publisher_.publish(createFeedbackMessage());
 }
 
+/**
+ When a right message arrives then process the message to create a packet, then send the packet to be written to the actuation platform and publish the feedback.
+ **/
 void SabertoothPropulsion::callbackPropulsionRight(const std_msgs::Float32::ConstPtr& right_message)
 {
 	sabertooth_motor_driver_->processMotorValue(&sabertooth_packet_, right_message->data, maximum_motor_value_, minimum_motor_value_, 
 		SabertoothPacket::SabertoothCommand::Motor2Forward, SabertoothPacket::SabertoothCommand::Motor2Backward);
 
-	queuePacket();
+	sendPacket();
 	
 	right_feedback_publisher_.publish(createFeedbackMessage());
 }
 
-void SabertoothPropulsion::queuePacket()
+/**
+Sending packet refers to sending the packet to the serial driver and then wait a bit before returning to the calling function.
+**/
+void SabertoothPropulsion::sendPacket()
 {
 	if(debug_)
 	{
@@ -147,6 +162,9 @@ void SabertoothPropulsion::queuePacket()
 	}
 }
 
+/**
+Creates a feedback message, this feedback messages takes the values of the packet that will be send to the actuation platform and creates a ros message for debugging.
+*/
 std_msgs::Int16 SabertoothPropulsion::createFeedbackMessage()
 {
 	std_msgs::Int16 feedback;

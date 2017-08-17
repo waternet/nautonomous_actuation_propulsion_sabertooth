@@ -56,7 +56,7 @@ class SabertoothPropulsion{
         void callbackPropulsionLeft(const std_msgs::Float32::ConstPtr& left_message);
         void callbackPropulsionRight(const std_msgs::Float32::ConstPtr& right_message);
 
-        void queuePacket();
+        void sendPacket();
 
         std_msgs::Int16 createFeedbackMessage();
 
