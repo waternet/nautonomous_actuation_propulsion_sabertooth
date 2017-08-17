@@ -1,27 +1,32 @@
 # nautonomous propulsion sabertooth {#nautonomous_propulsion_sabertooth}
 
-Package used to write commands to the serial output. command_actuation_node.cpp receives them from the nautonomous_propulsion_sabertooth, sabertooth.cpp transforms them to sabertooth commands, send_actuation.cpp send them to the serial. serial.cpp has the actual serial functions. 
+sabertooth_propulsion_node starts the software
 
+sabertooth_propulsion is the main object the coordinates the tasks of reading, processing and writing information.
 
-command_actuation_node.cpp
-Main file, subscribes to multiplexed topics.
+sabertooth_packet is a packet that encapsulates the address, command, value and checksum
 
-sabertooth.cpp Transforms the Twist message to an actual sabertooth command.
+sabertooth_motor_driver processes a message (twist or left/right) to create a sabertooth packet
 
-send_actuation.cpp Initilizes serial, sending commands.
+sabertooth_serial sends the packet using the serial driver to the serial port.
 
 serial.cpp Serial functions.
 
+actuation_watchdog processes input from the actuation platform to check if the actuation platform is responding correctly.
+
 ## Nodes
-command_actuation_node
+nautonomous_actuation_propulsion_sabertooth 
 
 ##Topics
 
 ###Subscribe
-/multiplexed_propulsion, /multiplexed_conveyor, /multiplexed_lighting
+left_motor_topic -> motor/left
+right_motor_topic -> motor/right
+cmd_vel_topic -> cmd_vel
 
 ###Publish
--- publishes commands to serial port --
+left_feedback_topic -> feedback/left
+right_feedback_topic -> feedback/right
 
 ## Files
 [Include](dir_24f9e5a3f98ba5b1652caba176a493c4.html)  |  [Src](dir_0e1bf686876a66f778c9a6403953ffcc.html)

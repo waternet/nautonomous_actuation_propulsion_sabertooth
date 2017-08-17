@@ -31,6 +31,7 @@ int SabertoothMotorDriver::sabertoothScale(double value, double max_value, doubl
     return motor_value;
 }
 
+// Create a sabertooth packet from the motor_value and use the other attributes to create the command and value for the packet.
 void SabertoothMotorDriver::processMotorValue(SabertoothPacket* packet, double motor_value, double max_value, double min_value, int positive_command, int negative_command)
 {
     uint8_t command = 0;
