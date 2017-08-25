@@ -1,6 +1,6 @@
 <launch>
 	
-	<arg name="propulsion_differential_mode_param" default="true"/>
+	<arg name="propulsion_differential_mode_param" default="false"/>
 	<arg name="actuation_serial_available_param" default="false"/>
     <arg name="debug" default="true"/>
 
