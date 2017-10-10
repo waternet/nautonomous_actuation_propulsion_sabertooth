@@ -122,6 +122,7 @@ void SabertoothPropulsion::checkWatchdog()
  */
 void SabertoothPropulsion::callbackPropulsionTwist(const geometry_msgs::Twist::ConstPtr& twist_message)
 {
+
 	sabertooth_motor_driver_->processMotorValue(&sabertooth_packet_, twist_message->linear.x, maximum_forward_value_, minimum_forward_value_, 
 		SabertoothPacket::SabertoothCommand::MixedForward, SabertoothPacket::SabertoothCommand::MixedBackward);
 
@@ -172,7 +173,7 @@ void SabertoothPropulsion::sendPacket()
 	if(actuation_watchdog_->isActive())
 	{
 		sabertooth_serial_->writePacket(sabertooth_packet_);
-		ros::Duration(0.025).sleep(); //TODO how fast can this be?
+		ros::Duration(0.05).sleep(); //TODO how fast can this be?
 	}
 }
 

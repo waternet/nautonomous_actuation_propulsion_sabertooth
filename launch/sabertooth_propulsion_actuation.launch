@@ -7,7 +7,7 @@
 	<arg name="actuation_serial_available_param" default="true"/>
 
 	<arg name="serial_timeout_ms" default="1000"/>
-	<arg name="ramp_time_ms" default="1000"/>
+	<arg name="ramp_time_ms" default="2500"/>
 
 	<arg name="debug" default="false"/>
 
